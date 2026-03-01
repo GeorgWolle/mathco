@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematik-Aufgabenpool</title>
+    <!-- MathJax für mathematische Notation -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #4caf50;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9em;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .metadata {
+            background: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        
+        .metadata-item {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #555;
+        }
+        
+        .instruction {
+            background: #fffde7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #fbc02d;
+        }
+        
+        .instruction h3 {
+            margin-bottom: 10px;
+            color: #f57f17;
+        }
+        
+        .instruction p {
+            line-height: 1.6;
+            color: #333;
+            margin: 8px 0;
+        }
+        
+        .aufgaben {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .aufgabe {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        .aufgabe:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+        
+        .aufgabe h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .select-wrapper {
+            margin-top: 15px;
+        }
+        
+        .select-wrapper label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+        
+        .answer-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .answer-select:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+        
+        .answer-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            min-height: 20px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            display: block;
+            background: #c8e6c9;
+            color: #2e7d32;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .feedback.incorrect {
+            display: block;
+            background: #ffcdd2;
+            color: #c62828;
+            border-left: 3px solid #f44336;
+        }
+        
+        .feedback::before {
+            content: '✓ ';
+        }
+        
+        .feedback.incorrect::before {
+            content: '✗ ';
+        }
+        
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .checkbox-option:hover {
+            border-color: #667eea;
+            background: #f5f7ff;
+        }
+        
+        .checkbox-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 12px;
+        }
+        
+        .checkbox-text {
+            flex: 1;
+        }
+        
+        .selection-feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .selection-feedback.show {
+            display: block;
+        }
+        
+        .selection-feedback.valid {
+            background: #c8e6c9;
+            color: #2e7d32;
+            border-left: 3px solid #4caf50;
+        }
+        
+        .selection-feedback.invalid {
+            background: #ffcdd2;
+            color: #c62828;
+            border-left: 3px solid #f44336;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateX(-3px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        @media (max-width: 800px) {
+            .aufgaben {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Mathematik-Aufgabenpool</h1>
+            <p id="taskTitle">Aufgabe 1</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 33.33%;"></div>
+            </div>
+            <div class="progress-text" id="progressText">Aufgabe 1 von 3</div>
+        </div>
+        
+        <div class="content" id="taskContainer">
+            <!-- Aufgaben werden hier eingefügt -->
+        </div>
+    </div>
+    
+    <script>
+        // Aufgaben-Daten
+        const tasks = [
+            {
+                id: 'task1',
+                title: '🔢 Zahlenmengen',
+                metadata: [
+                    { label: 'Aufgabe', value: 'Zahlenmengen (1_1567 | Typ 1)' },
+                    { label: 'Prüfling', value: 'Standardisierte Reife- und Diplomprüfung (SRDP)' },
+                    { label: 'Bereich', value: 'Zahlenmengen (Algebra)' },
+                    { label: 'Punkte', value: '0 / ½ / 1 P.' }
+                ],
+                instruction: 'Ordnen Sie den vier Zahlenmengen jeweils diejenige Zahl aus A bis F zu, die in dieser Zahlenmenge enthalten ist.',
+                type: 'select',
+                selections: [
+                    {
+                        name: 'ℕ (Natürliche Zahlen)',
+                        id: 'set1',
+                        correct: 'C',
+                        options: ['A: √7', 'B: π/4', 'C: 20/5', 'D: -√169', 'E: 2·i', 'F: 1,4̄']
+                    },
+                    {
+                        name: 'ℤ \\ ℕ (Ganze Zahlen ohne Natürliche)',
+                        id: 'set2',
+                        correct: 'D',
+                        options: ['A: √7', 'B: π/4', 'C: 20/5', 'D: -√169', 'E: 2·i', 'F: 1,4̄']
+                    },
+                    {
+                        name: 'ℚ \\ ℤ (Rationale Zahlen ohne Ganze)',
+                        id: 'set3',
+                        correct: 'F',
+                        options: ['A: √7', 'B: π/4', 'C: 20/5', 'D: -√169', 'E: 2·i', 'F: 1,4̄']
+                    },
+                    {
+                        name: 'ℂ \\ ℝ (Komplexe Zahlen ohne Reelle)',
+                        id: 'set4',
+                        correct: 'E',
+                        options: ['A: √7', 'B: π/4', 'C: 20/5', 'D: -√169', 'E: 2·i', 'F: 1,4̄']
+                    }
+                ]
+            },
+            {
+                id: 'task2',
+                title: '📐 Terme*',
+                metadata: [
+                    { label: 'Aufgabe', value: 'Terme* / Haupttermin 2025 / 1_1449 / Typ 1' },
+                    { label: 'Prüfling', value: 'Standardisierte Reife- und Diplomprüfung (SRDP)' },
+                    { label: 'Bereich', value: 'Algebra - Terme' },
+                    { label: 'Punkte', value: '0 / 1 P.' }
+                ],
+                instruction: `<div style="background: rgba(255, 152, 0, 0.1); padding: 15px; border-left: 4px solid #ff9800; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 1.05em;"><strong>📌 Bedingung:</strong></p>
+                    <p style="margin: 10px 0 0 0; font-size: 1.1em;">Für die von null verschiedenen ganzen Zahlen \\(a\\) und \\(b\\) gilt:</p>
+                    <p style="margin: 8px 0 0 0; text-align: center; font-size: 1.2em; background: white; padding: 10px; border-radius: 4px;">$$a = -4 \\cdot b$$</p>
+                </div>
+                <p style="margin: 0;"><strong>📝 Aufgabe:</strong> Kreuzen Sie die <strong>zwei</strong> Terme an, die in jedem Fall eine natürliche Zahl ergeben. [2 aus 5]</p>`,
+                type: 'checkbox',
+                checkboxes: [
+                    { text: '$$a - b$$', correct: false },
+                    { text: '$$-\\frac{a}{b}$$', correct: true },
+                    { text: '$$a + b$$', correct: false },
+                    { text: '$$(-a - b)^2$$', correct: true },
+                    { text: '$$a \\cdot b$$', correct: false }
+                ]
+            },
+            {
+                id: 'task3',
+                title: '📌 Aussagen',
+                metadata: [
+                    { label: 'Aufgabe', value: 'Aussagen zu Zahlenmengen (1_1425 | Typ 1)' },
+                    { label: 'Prüfling', value: 'Standardisierte Reife- und Diplomprüfung (SRDP)' },
+                    { label: 'Bereich', value: 'Zahlenmengen (Algebra)' },
+                    { label: 'Punkte', value: '0 / 1 P.' }
+                ],
+                instruction: `<div style="background: rgba(255, 152, 0, 0.1); padding: 15px; border-left: 4px solid #ff9800; border-radius: 4px; margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 1.05em;"><strong>📌 Gegeben:</strong></p>
+                    <p style="margin: 8px 0 0 0; font-size: 1em;">$$A = \\{x \\in \\mathbb{R} \\mid -1 < x < 0\\}$$</p>
+                    <p style="margin: 8px 0 0 0; font-size: 1em;">$$B = \\{y \\in \\mathbb{Q} \\mid -1 < y < 0\\}$$</p>
+                </div>
+                <p style="margin: 0;"><strong>📝 Aufgabe:</strong> Kreuzen Sie die <strong>zwei</strong> zutreffenden Aussagen an. [2 aus 5]</p>`,
+                type: 'checkbox',
+                checkboxes: [
+                    { text: 'A und B enthalten jeweils ganze Zahlen.', correct: false },
+                    { text: 'Die Summe zweier Elemente aus B liegt in jedem Fall in A.', correct: false },
+                    { text: 'Jedes Element von B ist auch Element von A.', correct: true },
+                    { text: 'Das Produkt zweier Elemente aus B liegt in jedem Fall in A.', correct: false },
+                    { text: 'A und B sind jeweils eine Teilmenge der komplexen Zahlen.', correct: true }
+                ]
+            }
+        ];
+        
+        let currentTaskIndex = 0;
+        
+        function renderTask(index) {
+            const task = tasks[index];
+            const container = document.getElementById('taskContainer');
+            const taskTitle = document.getElementById('taskTitle');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            // Update header
+            taskTitle.textContent = task.title;
+            const progressPercent = ((index + 1) / tasks.length) * 100;
+            progressFill.style.width = progressPercent + '%';
+            progressText.textContent = `Aufgabe ${index + 1} von ${tasks.length}`;
+            
+            // Build metadata
+            let metadataHTML = '';
+            task.metadata.forEach(item => {
+                metadataHTML += `<div class="metadata-item"><strong>${item.label}:</strong> ${item.value}</div>`;
+            });
+            
+            // Build instruction
+            let instructionHTML = `<div class="instruction"><h3>Aufgabenstellung</h3>${task.instruction}</div>`;
+            
+            // Build content
+            let contentHTML = `
+                <div class="metadata">
+                    ${metadataHTML}
+                </div>
+                ${instructionHTML}
+            `;
+            
+            // Build task-specific content
+            if (task.type === 'select') {
+                contentHTML += '<div class="aufgaben">';
+                task.selections.forEach(sel => {
+                    contentHTML += `
+                        <div class="aufgabe">
+                            <h4>${sel.name}</h4>
+                            <div class="select-wrapper">
+                                <label>Wähle die richtige Antwort:</label>
+                                <select id="${sel.id}" class="answer-select" data-correct="${sel.correct}">
+                                    <option value="">-- Bitte wählen --</option>
+                    `;
+                    sel.options.forEach((opt, i) => {
+                        const letter = String.fromCharCode(65 + i);
+                        contentHTML += `<option value="${letter}">${opt}</option>`;
+                    });
+                    contentHTML += `
+                                </select>
+                                <div class="feedback"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                contentHTML += '</div>';
+            } else if (task.type === 'checkbox') {
+                contentHTML += '<div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;"><div class="checkbox-group">';
+                task.checkboxes.forEach((cb, i) => {
+                    contentHTML += `
+                        <label class="checkbox-option">
+                            <input type="checkbox" class="task-checkbox" data-task="${index}" data-correct="${cb.correct}">
+                            <span class="checkbox-text">${cb.text}</span>
+                        </label>
+                    `;
+                });
+                contentHTML += `
+                    </div>
+                    <div class="selection-feedback" id="taskFeedback-${index}"></div>
+                </div>
+                `;
+            }
+            
+            // Build buttons
+            let buttonHTML = '<div class="button-group">';
+            if (index > 0) {
+                buttonHTML += `<button class="btn btn-secondary" onclick="previousTask()">← Zurück</button>`;
+            }
+            if (index < tasks.length - 1) {
+                buttonHTML += `<button class="btn btn-primary" onclick="nextTask()">Weiter zur nächsten Aufgabe →</button>`;
+            } else {
+                buttonHTML += `<button class="btn btn-primary" id="submitBtn" onclick="submitAnswers()">✓ Lösungen abgeben</button>`;
+            }
+            buttonHTML += '</div>';
+            
+            container.innerHTML = contentHTML + buttonHTML;
+            
+            // MathJax auffordern, die neue Seite zu rendern
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(err => console.log(err));
+            }
+            
+            // Attach event listeners
+            if (task.type === 'select') {
+                document.querySelectorAll('.answer-select').forEach(select => {
+                    select.addEventListener('change', function() {
+                        const feedback = this.parentElement.querySelector('.feedback');
+                        const correct = this.dataset.correct;
+                        const selected = this.value;
+                        
+                        feedback.classList.remove('correct', 'incorrect');
+                        
+                        if (selected === '') {
+                            feedback.style.display = 'none';
+                        } else if (selected === correct) {
+                            feedback.classList.add('correct');
+                            feedback.textContent = 'Richtig! ✓';
+                        } else {
+                            feedback.classList.add('incorrect');
+                            feedback.textContent = `Leider falsch. Korrekt ist: ${correct}`;
+                        }
+                    });
+                });
+            } else if (task.type === 'checkbox') {
+                document.querySelectorAll(`[data-task="${index}"]`).forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const selected = document.querySelectorAll(`[data-task="${index}"]:checked`);
+                        const feedback = document.getElementById(`taskFeedback-${index}`);
+                        
+                        if (selected.length === 0 || selected.length === 1) {
+                            feedback.classList.remove('show');
+                            return;
+                        }
+                        
+                        if (selected.length === 2) {
+                            const allCorrect = Array.from(selected).every(cb => cb.dataset.correct === 'true');
+                            feedback.classList.add('show');
+                            
+                            if (allCorrect) {
+                                feedback.classList.remove('invalid');
+                                feedback.classList.add('valid');
+                                feedback.textContent = '✓ Richtig! Du hast beide korrekten Antworten gefunden.';
+                            } else {
+                                feedback.classList.remove('valid');
+                                feedback.classList.add('invalid');
+                                feedback.textContent = '✗ Diese Kombination ist nicht richtig. Versuche es nochmal!';
+                            }
+                        } else if (selected.length > 2) {
+                            feedback.classList.add('show');
+                            feedback.classList.remove('valid');
+                            feedback.classList.add('invalid');
+                            feedback.textContent = `✗ Zu viele Antworten! Du hast ${selected.length} ausgewählt, aber nur 2 sind richtig.`;
+                        }
+                    });
+                });
+            }
+        }
+        
+        function nextTask() {
+            if (currentTaskIndex < tasks.length - 1) {
+                currentTaskIndex++;
+                renderTask(currentTaskIndex);
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function previousTask() {
+            if (currentTaskIndex > 0) {
+                currentTaskIndex--;
+                renderTask(currentTaskIndex);
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function submitAnswers() {
+            alert('Lösungen abgeben ausgelöst! (wird im nächsten Schritt implementiert)');
+        }
+        
+        // Rendern der ersten Aufgabe
+        renderTask(0);
+    </script>
+</body>
+</html>
