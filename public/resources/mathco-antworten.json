@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-03-01T15:18:26.289Z",
+  "totalTasks": 3,
+  "answers": [
+    {
+      "taskKey": "1",
+      "taskId": 1,
+      "page": 1,
+      "title": "Zahlenmengen",
+      "interactionType": "matching",
+      "selectCount": null,
+      "isStructured": true,
+      "selections": [
+        {
+          "category": "\\mathbb{N}",
+          "categoryIsLatex": true,
+          "selectedKey": "C",
+          "selectedDisplay": "\\frac{20}{5}",
+          "selectedIsLatex": true
+        },
+        {
+          "category": "\\mathbb{Z} \\setminus \\mathbb{N}",
+          "categoryIsLatex": true,
+          "selectedKey": "C",
+          "selectedDisplay": "\\frac{20}{5}",
+          "selectedIsLatex": true
+        },
+        {
+          "category": "\\mathbb{Q} \\setminus \\mathbb{Z}",
+          "categoryIsLatex": true,
+          "selectedKey": "C",
+          "selectedDisplay": "\\frac{20}{5}",
+          "selectedIsLatex": true
+        },
+        {
+          "category": "\\mathbb{C} \\setminus \\mathbb{R}",
+          "categoryIsLatex": true,
+          "selectedKey": "C",
+          "selectedDisplay": "\\frac{20}{5}",
+          "selectedIsLatex": true
+        }
+      ],
+      "order": 0
+    },
+    {
+      "taskKey": "Aufgabe",
+      "taskId": null,
+      "page": null,
+      "title": "Aufgabe",
+      "interactionType": null,
+      "selectCount": null,
+      "isStructured": false,
+      "order": 0
+    },
+    {
+      "taskKey": "3",
+      "taskId": 3,
+      "page": 3,
+      "title": "Terme",
+      "interactionType": "multi_choice",
+      "selectCount": 2,
+      "isStructured": true,
+      "selections": [
+        {
+          "key": "3",
+          "display": "a + b",
+          "isLatex": true
+        },
+        {
+          "key": "2",
+          "display": "\\frac{-a}{b}",
+          "isLatex": true
+        }
+      ],
+      "order": 1
+    },
+    {
+      "taskKey": "5",
+      "taskId": 5,
+      "page": 5,
+      "title": "Zahlenmengen",
+      "interactionType": "multi_choice",
+      "selectCount": 2,
+      "isStructured": true,
+      "selections": [
+        {
+          "key": "3",
+          "display": "Jedes Element von $B$ ist auch Element von $A$.",
+          "isLatex": true
+        },
+        {
+          "key": "2",
+          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
+          "isLatex": true
+        }
+      ],
+      "order": 2
+    }
+  ]
+}
