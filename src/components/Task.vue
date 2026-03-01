@@ -7,6 +7,8 @@ const props = defineProps({
   task: { type: Object, required: true }
 })
 
+const emit = defineEmits(['requirement-change', 'answer-change'])
+
 const splitTitle = (title = '') => {
   const tokens = title
     .split('/')
@@ -233,6 +235,130 @@ const toggleChoiceSelection = (label) => {
 }
 
 const isChoiceSelected = (label) => choiceSelections.value.includes(label)
+
+const filledSetSelections = computed(() => setSelections.value.filter(Boolean).length)
+const requiredMatchingSelections = computed(() => {
+  if (!isMatchingTask.value) return 0
+  const configured = Number(structuredTask.value.selectCount)
+  if (Number.isFinite(configured) && configured > 0) return configured
+  return structuredTask.value.sets.length
+})
+
+const matchingRequirementMet = computed(() => {
+  if (!isMatchingTask.value) return true
+  const required = requiredMatchingSelections.value
+  if (!required) return true
+  return filledSetSelections.value >= required
+})
+
+const requiredChoiceSelections = computed(() => {
+  if (!isMultiChoiceTask.value) return 0
+  const configured = Number(structuredTask.value.selectCount)
+  if (Number.isFinite(configured) && configured > 0) return configured
+  return structuredTask.value.options.length ? 1 : 0
+})
+
+const multiChoiceRequirementMet = computed(() => {
+  if (!isMultiChoiceTask.value) return true
+  const required = requiredChoiceSelections.value
+  if (!required) return structuredTask.value.options.length === 0
+  return choiceSelections.value.length >= required
+})
+
+const hasMetSelectionRequirement = computed(() => {
+  if (isMatchingTask.value) return matchingRequirementMet.value
+  if (isMultiChoiceTask.value) return multiChoiceRequirementMet.value
+  return true
+})
+
+watch(
+  hasMetSelectionRequirement,
+  (isMet) => {
+    emit('requirement-change', isMet)
+  },
+  { immediate: true }
+)
+
+const taskKey = computed(() => {
+  if (props.task?.id !== undefined && props.task?.id !== null) {
+    return String(props.task.id)
+  }
+  if (structuredTask.value.page !== undefined && structuredTask.value.page !== null) {
+    return `page-${structuredTask.value.page}`
+  }
+  if (props.task?.meta?.task_id) {
+    return String(props.task.meta.task_id)
+  }
+  if (structuredTask.value.heading) {
+    return structuredTask.value.heading
+  }
+  return `task-${props.task?.page ?? 0}`
+})
+
+const optionLookup = computed(() => {
+  const map = {}
+  structuredTask.value.options.forEach((option) => {
+    map[option.label] = option
+  })
+  return map
+})
+
+const buildAnswerPayload = () => {
+  const base = {
+    taskKey: taskKey.value,
+    taskId: props.task?.id ?? null,
+    page: structuredTask.value.page ?? null,
+    title: structuredTask.value.heading ?? '',
+    interactionType: structuredTask.value.interactionType ?? null,
+    selectCount: structuredTask.value.selectCount ?? null,
+    isStructured: structuredTask.value.isStructured ?? false
+  }
+
+  if (isMatchingTask.value) {
+    return {
+      ...base,
+      selections: structuredTask.value.sets.map((set, idx) => {
+        const selectedKey = setSelections.value[idx] || null
+        const option = selectedKey ? optionLookup.value[selectedKey] : null
+        return {
+          category: set.label,
+          categoryIsLatex: set.isLatex,
+          selectedKey,
+          selectedDisplay: option?.value ?? null,
+          selectedIsLatex: option?.isLatex ?? false
+        }
+      })
+    }
+  }
+
+  if (isMultiChoiceTask.value) {
+    return {
+      ...base,
+      selections: choiceSelections.value.map((label) => {
+        const option = optionLookup.value[label] ?? null
+        return {
+          key: label,
+          display: option?.value ?? null,
+          isLatex: option?.isLatex ?? false
+        }
+      })
+    }
+  }
+
+  return base
+}
+
+const emitAnswerChange = () => {
+  emit('answer-change', buildAnswerPayload())
+}
+
+watch(
+  [() => setSelections.value, () => choiceSelections.value, () => structuredTask.value],
+  () => {
+    emitAnswerChange()
+  },
+  { deep: true, immediate: true }
+)
 </script>
 
 <template>
