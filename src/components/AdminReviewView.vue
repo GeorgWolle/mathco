@@ -2,6 +2,31 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 
+import Task from './Task.vue'
+const tasks = ref([])
+const TASKS_PATH = '/resources/tasks.json'
+
+const loadTasks = async () => {
+  try {
+    const res = await fetch(TASKS_PATH)
+    if (!res.ok) throw new Error(`tasks.json nicht gefunden (${res.status}).`)
+    const data = await res.json()
+    tasks.value = Array.isArray(data) ? data : []
+  } catch (err) {
+    console.warn('Konnte tasks.json nicht laden', err)
+  }
+}
+
+// Hole die Aufgabenstellung zur aktuellen Antwort
+const currentTaskOriginal = computed(() => {
+  if (!currentAnswer.value) return null
+  // Versuche, die Aufgabe per id zu finden (taskId, id, task_id)
+  const taskId = currentAnswer.value.taskId || currentAnswer.value.task_id || currentAnswer.value.id
+  if (!taskId) return null
+  // tasks.json: id ist meist Zahl, taskId kann String sein
+  return tasks.value.find(t => String(t.id) === String(taskId) || String(t.aufgaben_id) === String(taskId)) || null
+})
+
 const jsonInput = ref('')
 const reviewItems = ref([])
 const activeIndex = ref(0)
@@ -190,6 +215,7 @@ const loadSolutions = async () => {
 onMounted(() => {
   loadDefaultSubmission()
   loadSolutions()
+  loadTasks()
 })
 </script>
 
@@ -260,6 +286,15 @@ onMounted(() => {
           </p>
         </div>
       </div>
+
+
+        <details class="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 text-sm text-indigo-700 mb-4" :open="false">
+          <summary class="cursor-pointer text-sm font-semibold text-indigo-800">Original Aufgabenstellung anzeigen</summary>
+          <div v-if="currentTaskOriginal" class="mt-4">
+            <Task :task="currentTaskOriginal" />
+          </div>
+          <div v-else class="italic text-slate-400">Keine Aufgabenstellung gefunden.</div>
+        </details>
 
       <div class="space-y-3 rounded-2xl border border-slate-100 p-5">
         <div class="flex items-center justify-between">
