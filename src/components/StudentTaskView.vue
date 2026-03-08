@@ -25,6 +25,21 @@ const progressPercent = computed(() => {
   return ((activeTaskIndex.value + 1) / totalTasks.value) * 100
 })
 const isLastTask = computed(() => totalTasks.value > 0 && activeTaskIndex.value === totalTasks.value - 1)
+
+const dotStates = computed(() => {
+  return tasks.value.map((t, i) => {
+    const key = t.id != null ? String(t.id) : `page-${t.page ?? i}`
+    const answered = !!taskResponses.value[key]
+    if (i === activeTaskIndex.value) return 'active'
+    if (i < activeTaskIndex.value || answered) return 'done'
+    return ''
+  })
+})
+
+const heroTitle = computed(() => {
+  const cat = currentTask.value?.category
+  return cat || 'Algebra & Gleichungen'
+})
 const finishDisabled = computed(() => {
   if (!isLastTask.value) return true
   if (debugOverride.value) return false
@@ -120,14 +135,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
+  <section>
     <template v-if="tasks.length">
-      <TaskHero
-        :title="currentTask.title || 'Aufgabe'"
-        :progress-percent="progressPercent"
-        progress-text=""
-      />
       <section class="px-10 py-8 space-y-7">
+        <TaskHero
+          :title="heroTitle"
+          :progress-percent="progressPercent"
+          :active-index="activeTaskIndex"
+          :total="totalTasks"
+          :dot-states="dotStates"
+        />
         <Task
           :task="currentTask"
           @requirement-change="handleRequirementChange"
@@ -155,28 +172,25 @@ onMounted(async () => {
         <button
           v-if="isLastTask"
           type="button"
-          class="px-4 py-2 rounded-md font-medium transition bg-emerald-600 text-white hover:bg-emerald-500"
-          :class="{ 'cursor-not-allowed opacity-60 hover:bg-emerald-600': finishDisabled }"
+          class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-6 py-3 text-white transition hover:-translate-y-px"
+          :style="finishDisabled ? 'opacity:0.4;cursor:default' : 'background:linear-gradient(135deg,var(--accent),#5a53d4);box-shadow:0 4px 16px rgba(0,0,0,0.3)'"
           :disabled="finishDisabled"
           :aria-disabled="finishDisabled"
-          @click="downloadResults"
+          @click="() => { downloadResults(); $emit('show-confetti'); }"
         >
-          Abschließen & Download
+          <span aria-hidden="true">🎉</span>
+          <span>Super, alles geschafft! Download</span>
         </button>
         <button
           v-else
           type="button"
-          class="px-4 py-2 rounded-md font-medium transition"
-          :class="[
-            isNextDisabled
-              ? 'cursor-not-allowed bg-slate-100 text-slate-400'
-              : 'bg-indigo-600 text-white hover:bg-indigo-500'
-          ]"
+          class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-6 py-3 text-white transition hover:-translate-y-px"
+          :style="isNextDisabled ? 'background:var(--surface2);color:var(--text-muted);cursor:default;border:1.5px solid var(--border)' : 'background:linear-gradient(135deg,var(--accent),#5a53d4);box-shadow:0 4px 16px rgba(0,0,0,0.3)'"
           :disabled="isNextDisabled"
           :aria-disabled="isNextDisabled"
           @click="goToNextTask"
         >
-          Nächstes Beispiel
+          <span>Nächstes Beispiel</span>
         </button>
         </div>
       </section>

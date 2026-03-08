@@ -220,7 +220,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="w-full rounded-3xl bg-white/95 p-8 shadow-2xl">
+  <section class="w-full rounded-3xl bg-surface p-8 shadow-accent my-8">
     <header class="mb-8 space-y-2 text-slate-800">
       <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Admin Review</p>
       <h2 class="text-3xl font-semibold text-slate-900">Hallo, liebe Tutor:innen 👋</h2>
@@ -233,20 +233,21 @@ onMounted(() => {
       <label class="block text-sm font-semibold text-slate-700">Antwort als JSON</label>
       <textarea
         v-model="jsonInput"
-        class="min-h-[220px] w-full rounded-2xl border border-slate-200 bg-slate-50/70 p-4 font-mono text-sm text-slate-800 focus:border-indigo-400 focus:bg-white focus:outline-none"
+        class="min-h-[220px] w-full rounded-xl border border-[var(--border)] bg-surface2 p-4 font-mono text-sm text-[var(--text)] focus:border-accent2 focus:bg-surface focus:outline-none"
         placeholder='{"taskId":"abc","answers":{"1":"A"}}'
       ></textarea>
       <button
         type="submit"
-        class="inline-flex w-full items-center justify-center rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-semibold tracking-wide text-white shadow-lg shadow-indigo-600/40 transition hover:-translate-y-0.5 hover:bg-indigo-500"
+        class="inline-flex w-full items-center justify-center rounded-xl bg-accent2 px-5 py-3 text-sm font-semibold tracking-wide text-surface shadow-accent2 transition hover:-translate-y-0.5 hover:bg-accent2/80"
       >
         JSON einreichen
       </button>
       <p v-if="parseError" class="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-2 text-sm text-rose-600">
         {{ parseError }}
       </p>
-      <p v-else-if="statusMessage" class="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-2 text-sm text-emerald-700">
-        {{ statusMessage }}
+      <p v-else-if="statusMessage" class="rounded-xl border border-accent2 bg-surface2 px-4 py-2 text-sm text-accent2 flex items-center gap-2">
+        <span aria-hidden="true">🥳</span>
+        <span>{{ statusMessage }}</span>
       </p>
     </form>
   </section>
@@ -254,29 +255,32 @@ onMounted(() => {
   <section
     v-if="hasReviewSession"
     ref="reviewSectionRef"
-    class="mt-6 w-full rounded-3xl bg-white p-8 shadow-2xl"
+    class="mt-8 w-full rounded-3xl bg-surface p-8 shadow-accent"
   >
     <header class="mb-6 space-y-2">
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-400">Auswertung</p>
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">Auswertung</p>
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h3 class="text-2xl font-semibold text-slate-900">Antwort {{ activeIndex + 1 }} prüfen</h3>
         <span class="text-sm font-medium text-slate-500">{{ progressLabel }}</span>
       </div>
-      <div class="h-2 w-full rounded-full bg-slate-100">
+      <div class="h-3 w-full rounded-full bg-yellow-100/80 border border-yellow-200 overflow-hidden relative mt-2 mb-2">
         <div
-          class="h-2 rounded-full bg-indigo-500 transition-[width] duration-300"
+          class="h-full rounded-full bg-gradient-to-r from-yellow-300 to-yellow-400 shadow-inner transition-[width] duration-300"
           :style="{ width: `${progressPercent}%` }"
         ></div>
+        <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-semibold text-yellow-900/80 select-none">
+          {{ Math.round(progressPercent) }}% 🎯
+        </span>
       </div>
     </header>
 
     <section class="space-y-6">
-      <div class="grid gap-4 rounded-2xl border border-slate-100 bg-slate-50/60 p-5 sm:grid-cols-3">
+      <div class="grid gap-4 rounded-xl border border-[var(--border)] bg-surface2 p-5 sm:grid-cols-3">
         <div v-for="summary in currentSummary" :key="summary.label" class="space-y-1">
           <p class="text-xs uppercase tracking-wide text-slate-400">{{ summary.label }}</p>
           <p class="text-base font-medium text-slate-900">
             <template v-if="summary.label === 'Quelle' && summary.value && summary.value !== '–'">
-              <a :href="summary.value" target="_blank" rel="noopener" class="underline text-indigo-700 hover:text-indigo-500">
+              <a :href="summary.value" target="_blank" rel="noopener" class="underline text-emerald-700 hover:text-emerald-500">
                 {{ summary.value.split('/').pop() }}
               </a>
             </template>
@@ -288,15 +292,15 @@ onMounted(() => {
       </div>
 
 
-        <details class="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 text-sm text-indigo-700 mb-4" :open="false">
-          <summary class="cursor-pointer text-sm font-semibold text-indigo-800">Original Aufgabenstellung anzeigen</summary>
+        <details class="rounded-xl border border-accent2 bg-surface2 p-4 text-sm text-accent2 mb-4" :open="false">
+          <summary class="cursor-pointer text-sm font-semibold text-accent2">Original Aufgabenstellung anzeigen</summary>
           <div v-if="currentTaskOriginal" class="mt-4">
             <Task :task="currentTaskOriginal" />
           </div>
           <div v-else class="italic text-slate-400">Keine Aufgabenstellung gefunden.</div>
         </details>
 
-      <div class="space-y-3 rounded-2xl border border-slate-100 p-5">
+      <div class="space-y-3 rounded-xl border border-[var(--border)] bg-surface2 p-5">
         <div class="flex items-center justify-between">
           <h4 class="text-base font-semibold text-slate-900">Auswahlen & Zuordnungen</h4>
           <span class="text-sm text-slate-500">{{ selectionRows.length }} Einträge</span>
@@ -305,30 +309,31 @@ onMounted(() => {
           <article
             v-for="row in selectionRows"
             :key="row.id"
-            class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm flex flex-col gap-2"
+            class="rounded-xl border border-[var(--border)] bg-surface p-4 shadow-accent2 flex flex-col gap-2"
           >
             <div class="flex items-center gap-2">
               <p class="text-sm font-semibold text-slate-500 flex-1" v-html="row.label" v-math-render></p>
-              <span v-if="row.correct === true" class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">✔️ korrekt</span>
-              <span v-else-if="row.correct === false" class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">✗ falsch</span>
+              <span v-if="row.correct === true" class="inline-flex items-center rounded-full bg-surface2 px-2 py-0.5 text-xs font-semibold text-accent3 border border-accent3">✔️ korrekt! 🎉</span>
+              <span v-else-if="row.correct === false" class="inline-flex items-center rounded-full bg-surface2 px-2 py-0.5 text-xs font-semibold text-accent4 border border-accent4">✗ leider falsch 😅</span>
             </div>
             <p class="text-xl font-medium text-slate-900 text-center" v-html="row.detail" v-math-render></p>
             <span
               v-if="row.badge"
-              class="mt-2 inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600"
+              class="mt-2 inline-flex items-center rounded-full bg-surface2 px-3 py-1 text-xs font-semibold text-accent2 border border-accent2"
             >
               {{ row.badge }}
             </span>
           </article>
         </div>
-              <div v-if="currentSolution && currentSolution.loesungsweg && currentSolution.loesungsweg.length" class="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
-                <h4 class="text-base font-semibold text-indigo-700 mb-2">Lösungsweg</h4>
+              <div v-if="currentSolution && currentSolution.loesungsweg && currentSolution.loesungsweg.length" class="mt-6 rounded-xl border border-accent2 bg-surface2 p-5">
+                <h4 class="text-base font-semibold text-accent2 mb-2">Lösungsweg</h4>
                 <ol class="list-decimal list-inside space-y-1">
                   <li v-for="step in currentSolution.loesungsweg" :key="step.step" class="text-slate-800" v-html="step.text" v-math-render></li>
                 </ol>
               </div>
-        <p v-else class="rounded-xl border border-dashed border-slate-200 px-4 py-3 text-sm text-slate-500">
-          Keine Auswahl-Daten für diese Antwort gefunden.
+        <p v-else class="rounded-xl border border-dashed border-[var(--border)] px-4 py-3 text-sm text-muted flex items-center gap-2">
+          <span aria-hidden="true">💡</span>
+          <span>Keine Auswahl-Daten für diese Antwort gefunden. Weiter so!</span>
         </p>
       </div>
 
@@ -355,12 +360,13 @@ onMounted(() => {
         type="button"
         class="inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-semibold transition"
         :class="[
-          canGoNext ? 'bg-indigo-600 text-white hover:bg-indigo-500' : 'bg-indigo-100 text-indigo-300 cursor-not-allowed'
+          canGoNext ? 'bg-yellow-400 text-yellow-900 hover:bg-yellow-300' : 'bg-yellow-100 text-yellow-300 cursor-not-allowed'
         ]"
         :disabled="!canGoNext"
         @click="goNext"
       >
-        {{ isOnLastAnswer ? 'Ende erreicht' : 'Weiter' }}
+        <span v-if="isOnLastAnswer">Ende erreicht 🎊</span>
+        <span v-else>Weiter ➡️</span>
       </button>
     </footer>
   </section>

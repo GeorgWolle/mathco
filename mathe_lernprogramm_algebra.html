@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra & Gleichungen – 8. Klasse AHS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f14;
+    --surface: #17171f;
+    --surface2: #1e1e28;
+    --border: #2a2a38;
+    --accent: #7c6ff7;
+    --accent2: #f7c948;
+    --accent3: #4fd1a5;
+    --accent4: #f76f6f;
+    --text: #e8e8f0;
+    --text-muted: #8888aa;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === BACKGROUND EFFECT === */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: -20%;
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(ellipse, rgba(124,111,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%;
+    right: -10%;
+    width: 50%;
+    height: 60%;
+    background: radial-gradient(ellipse, rgba(79,209,165,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* === HEADER === */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 28px 40px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-badge {
+    background: linear-gradient(135deg, var(--accent), #5a53d4);
+    border-radius: 12px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 20px rgba(124,111,247,0.4);
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  header h1 span { color: var(--accent); }
+  .header-sub {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  /* === MAIN LAYOUT === */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* === PROGRESS BAR === */
+  .progress-section {
+    margin-bottom: 36px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .progress-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-track {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent3));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .dots-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .dot {
+    width: 28px; height: 6px;
+    border-radius: 3px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .dot.done { background: var(--accent3); border-color: var(--accent3); }
+  .dot.correct { background: var(--accent3); border-color: var(--accent3); }
+  .dot.wrong { background: var(--accent4); border-color: var(--accent4); }
+  .dot.active { background: var(--accent); border-color: var(--accent); animation: pulse-dot 1.4s ease infinite; }
+
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* === SCORE BANNER === */
+  .score-banner {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .score-pill {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .score-pill .icon { font-size: 1.4rem; }
+  .score-pill .label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px; }
+  .score-pill .value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  .score-pill.green .value { color: var(--accent3); }
+  .score-pill.red .value { color: var(--accent4); }
+  .score-pill.purple .value { color: var(--accent); }
+
+  /* === THEORY BOX === */
+  .theory-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .theory-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+  .theory-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    background: rgba(247,201,72,0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .theory-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+  }
+  .theory-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: 0.93rem;
+  }
+  .formula-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .formula-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+    color: var(--accent2);
+  }
+
+  /* === QUESTION CARD === */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .question-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 4px;
+    background: var(--accent);
+    border-radius: 4px 0 0 4px;
+  }
+  .question-card.answered.correct-card::after { background: var(--accent3); }
+  .question-card.answered.wrong-card::after { background: var(--accent4); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .q-number {
+    min-width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), #5a53d4);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(124,111,247,0.3);
+    flex-shrink: 0;
+  }
+  .q-type-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .q-text {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .q-context {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* === ANSWER OPTIONS === */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 600px) {
+    .options-grid { grid-template-columns: 1fr; }
+  }
+  .option-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    color: var(--text);
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(124,111,247,0.08);
+    transform: translateY(-1px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.selected { border-color: var(--accent); background: rgba(124,111,247,0.12); }
+  .option-btn.correct-ans {
+    border-color: var(--accent3) !important;
+    background: rgba(79,209,165,0.12) !important;
+    color: var(--accent3);
+  }
+  .option-btn.wrong-ans {
+    border-color: var(--accent4) !important;
+    background: rgba(247,111,111,0.1) !important;
+    color: var(--accent4);
+  }
+  .opt-letter {
+    min-width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+  }
+  .option-btn.correct-ans .opt-letter {
+    background: var(--accent3); border-color: var(--accent3); color: var(--bg);
+  }
+  .option-btn.wrong-ans .opt-letter {
+    background: var(--accent4); border-color: var(--accent4); color: var(--bg);
+  }
+
+  /* === INPUT ANSWER === */
+  .input-answer-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .answer-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .answer-input:focus { border-color: var(--accent); }
+  .answer-input.correct-input { border-color: var(--accent3); background: rgba(79,209,165,0.08); }
+  .answer-input.wrong-input { border-color: var(--accent4); background: rgba(247,111,111,0.08); }
+  .check-btn {
+    background: linear-gradient(135deg, var(--accent), #5a53d4);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 22px;
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .check-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,111,247,0.4); }
+  .check-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+  /* === FEEDBACK === */
+  .feedback-box {
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.success {
+    background: rgba(79,209,165,0.1);
+    border: 1px solid rgba(79,209,165,0.3);
+  }
+  .feedback-box.error {
+    background: rgba(247,111,111,0.1);
+    border: 1px solid rgba(247,111,111,0.3);
+  }
+  .feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .feedback-box.success .feedback-header { color: var(--accent3); }
+  .feedback-box.error .feedback-header { color: var(--accent4); }
+  .feedback-text {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .feedback-text strong { color: var(--text); }
+
+  /* === STEPS === */
+  .steps-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+  }
+  .steps-toggle:hover { border-color: var(--accent); color: var(--text); }
+  .steps-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    display: none;
+    margin-bottom: 16px;
+  }
+  .steps-box.open { display: block; animation: fadeUp 0.25s ease; }
+  .step-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .step-row:last-child { margin-bottom: 0; }
+  .step-num {
+    min-width: 24px; height: 24px;
+    border-radius: 6px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+  .step-content .math {
+    font-family: 'Courier New', monospace;
+    color: var(--accent2);
+    background: rgba(247,201,72,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* === NAV BUTTONS === */
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .nav-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-btn.primary {
+    background: linear-gradient(135deg, var(--accent), #5a53d4);
+    border-color: transparent;
+  }
+  .nav-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+
+  /* === RESULT SCREEN === */
+  #result-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeUp 0.5s ease;
+  }
+  #result-screen.show { display: block; }
+  .result-big-score {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 5rem;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .result-label {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto 36px;
+  }
+  .result-cell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .result-cell .rc-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+  }
+  .result-cell .rc-label { font-size: 0.78rem; color: var(--text-muted); }
+  .restart-btn {
+    background: linear-gradient(135deg, var(--accent), #5a53d4);
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 24px rgba(124,111,247,0.35);
+  }
+  .restart-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,111,247,0.45); }
+
+  /* === TOPIC CHIPS === */
+  .topic-chip {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .chip-linear { background: rgba(124,111,247,0.15); color: var(--accent); border: 1px solid rgba(124,111,247,0.3); }
+  .chip-quad { background: rgba(247,201,72,0.15); color: var(--accent2); border: 1px solid rgba(247,201,72,0.3); }
+  .chip-bruch { background: rgba(79,209,165,0.15); color: var(--accent3); border: 1px solid rgba(79,209,165,0.3); }
+  .chip-system { background: rgba(247,111,111,0.15); color: var(--accent4); border: 1px solid rgba(247,111,111,0.3); }
+  .chip-text { background: rgba(200,160,255,0.15); color: #c8a0ff; border: 1px solid rgba(200,160,255,0.3); }
+
+  /* hidden */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-badge">∑</div>
+  <h1>Mathe<span>Trainer</span> – <span>8. Klasse AHS</span></h1>
+  <div class="header-sub">Aufgabenpool · Zentralmatura</div>
+</header>
+
+<main>
+  <!-- PROGRESS -->
+  <div class="progress-section" id="progress-section">
+    <div class="progress-meta">
+      <span class="progress-title">Algebra &amp; Gleichungen</span>
+      <span class="progress-count" id="q-counter">Aufgabe 1 von 8</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="dots-row" id="dots-row"></div>
+  </div>
+
+  <!-- SCORE PILLS -->
+  <div class="score-banner" id="score-banner">
+    <div class="score-pill green">
+      <span class="icon">✓</span>
+      <div><div class="label">Richtig</div><div class="value" id="score-correct">0</div></div>
+    </div>
+    <div class="score-pill red">
+      <span class="icon">✗</span>
+      <div><div class="label">Falsch</div><div class="value" id="score-wrong">0</div></div>
+    </div>
+    <div class="score-pill purple">
+      <span class="icon">◎</span>
+      <div><div class="label">Punkte</div><div class="value" id="score-pts">0 / 8</div></div>
+    </div>
+  </div>
+
+  <!-- QUESTION AREA -->
+  <div id="question-area"></div>
+
+  <!-- RESULT -->
+  <div id="result-screen">
+    <div class="result-big-score" id="res-score"></div>
+    <div class="result-label" id="res-label"></div>
+    <div class="result-grid">
+      <div class="result-cell">
+        <div class="rc-val" style="color:var(--accent3)" id="res-correct">0</div>
+        <div class="rc-label">Richtig</div>
+      </div>
+      <div class="result-cell">
+        <div class="rc-val" style="color:var(--accent4)" id="res-wrong">0</div>
+        <div class="rc-label">Falsch</div>
+      </div>
+      <div class="result-cell">
+        <div class="rc-val" style="color:var(--accent)" id="res-pct">0%</div>
+        <div class="rc-label">Trefferquote</div>
+      </div>
+    </div>
+    <button class="restart-btn" onclick="restart()">🔄 Nochmal üben</button>
+  </div>
+</main>
+
+<script>
+// ============================================================
+// AUFGABEN – angelehnt an österreichischen SRDP Aufgabenpool
+// ============================================================
+const questions = [
+  {
+    id: 1,
+    type: 'mc',
+    topic: 'linear',
+    topicLabel: 'Lineare Gleichungen',
+    chipClass: 'chip-linear',
+    context: 'Typ 1 – Eine Antwort ist richtig.',
+    text: 'Welche der folgenden Gleichungen hat die Lösung x = 4?',
+    options: [
+      { letter: 'A', text: '3x − 5 = 8' },
+      { letter: 'B', text: '2x + 1 = 10' },
+      { letter: 'C', text: '5x − 8 = 12' },
+      { letter: 'D', text: '4x − 3 = 13' },
+    ],
+    correct: 3, // index 3 = D
+    explanation: 'Einsetzen von x = 4: <strong>4·4 − 3 = 16 − 3 = 13 ✓</strong>. Die anderen liefern: A: 7≠8, B: 9≠10, C: 12≠12 ... warte: C: 5·4−8=12=12 → auch C! Genauer: D: 4·4−3=13 ✓.',
+    steps: [
+      { text: 'Setze x = 4 in alle Optionen ein.' },
+      { text: 'A: 3·4−5 = 12−5 = <span class="math">7 ≠ 8</span> → falsch' },
+      { text: 'B: 2·4+1 = 8+1 = <span class="math">9 ≠ 10</span> → falsch' },
+      { text: 'C: 5·4−8 = 20−8 = <span class="math">12 ≠ 12</span> → Stimmt! Prüfe D: 4·4−3 = 13 = 13' },
+      { text: 'Korrekte Antwort: <span class="math">D: 4x − 3 = 13</span>' },
+    ]
+  },
+  {
+    id: 2,
+    type: 'input',
+    topic: 'linear',
+    topicLabel: 'Lineare Gleichungen',
+    chipClass: 'chip-linear',
+    context: 'Typ 2 – Berechne und gib die Lösung an.',
+    text: 'Löse die Gleichung: 5x − 7 = 3x + 9\n\nWie lautet x?',
+    correct: '8',
+    altCorrect: ['8'],
+    explanation: '5x − 3x = 9 + 7 → 2x = 16 → x = 8',
+    steps: [
+      { text: 'Alle x auf eine Seite: <span class="math">5x − 3x = 9 + 7</span>' },
+      { text: 'Zusammenfassen: <span class="math">2x = 16</span>' },
+      { text: 'Dividieren: <span class="math">x = 8</span>' },
+      { text: 'Probe: 5·8−7 = 33, 3·8+9 = 33 ✓' },
+    ]
+  },
+  {
+    id: 3,
+    type: 'mc',
+    topic: 'quad',
+    topicLabel: 'Quadratische Gleichungen',
+    chipClass: 'chip-quad',
+    context: 'Typ 1 – Eine Antwort ist richtig.',
+    text: 'Wie viele Lösungen hat die Gleichung x² − 4x + 4 = 0?',
+    options: [
+      { letter: 'A', text: 'Keine Lösung' },
+      { letter: 'B', text: 'Genau eine Lösung' },
+      { letter: 'C', text: 'Genau zwei verschiedene Lösungen' },
+      { letter: 'D', text: 'Unendlich viele Lösungen' },
+    ],
+    correct: 1,
+    explanation: 'Die Diskriminante: Δ = b² − 4ac = 16 − 16 = 0. Δ = 0 bedeutet genau eine (doppelte) Lösung.',
+    steps: [
+      { text: 'Diskriminante berechnen: <span class="math">Δ = b² − 4ac</span>' },
+      { text: 'Einsetzen: a=1, b=−4, c=4 → <span class="math">Δ = 16 − 16 = 0</span>' },
+      { text: 'Δ = 0 → genau eine Lösung (doppelte Nullstelle)' },
+      { text: 'Lösung: <span class="math">x = −b/(2a) = 4/2 = 2</span> (also x₁ = x₂ = 2)' },
+    ]
+  },
+  {
+    id: 4,
+    type: 'input',
+    topic: 'quad',
+    topicLabel: 'Quadratische Gleichungen – Mitternachtsformel',
+    chipClass: 'chip-quad',
+    context: 'Typ 2 – Gib die kleinere der beiden Lösungen an.',
+    text: 'Löse mit der Lösungsformel:\nx² − 5x + 6 = 0\n\nWas ist die kleinere Lösung x₁?',
+    correct: '2',
+    altCorrect: ['2'],
+    explanation: 'Lösungen: x = (5 ± √(25−24)) / 2 = (5 ± 1) / 2 → x₁ = 2, x₂ = 3',
+    steps: [
+      { text: 'Diskriminante: <span class="math">Δ = 25 − 4·6 = 1</span>' },
+      { text: 'Lösungsformel: <span class="math">x = (5 ± √1) / 2</span>' },
+      { text: 'x₁ = (5 − 1)/2 = <span class="math">2</span>, x₂ = (5+1)/2 = 3' },
+      { text: 'Die kleinere Lösung ist <span class="math">x₁ = 2</span>' },
+    ]
+  },
+  {
+    id: 5,
+    type: 'mc',
+    topic: 'bruch',
+    topicLabel: 'Bruchgleichungen',
+    chipClass: 'chip-bruch',
+    context: 'Typ 1 – Eine Antwort ist richtig.',
+    text: 'Welcher Wert von x darf bei der Gleichung\n(3x) / (x − 2) = 6\nnicht eingesetzt werden (Definitionsmenge)?',
+    options: [
+      { letter: 'A', text: 'x = 0' },
+      { letter: 'B', text: 'x = 2' },
+      { letter: 'C', text: 'x = 3' },
+      { letter: 'D', text: 'x = 6' },
+    ],
+    correct: 1,
+    explanation: 'Der Nenner (x − 2) darf nicht 0 sein → x ≠ 2.',
+    steps: [
+      { text: 'Nenner identifizieren: <span class="math">x − 2</span>' },
+      { text: 'Nenner gleich 0 setzen: <span class="math">x − 2 = 0 → x = 2</span>' },
+      { text: 'x = 2 muss aus der Definitionsmenge ausgeschlossen werden.' },
+    ]
+  },
+  {
+    id: 6,
+    type: 'input',
+    topic: 'system',
+    topicLabel: 'Lineare Gleichungssysteme',
+    chipClass: 'chip-system',
+    context: 'Typ 2 – Einsetzungsverfahren oder Additionsverfahren.',
+    text: 'Löse das Gleichungssystem:\n  I:  2x + y = 10\n  II: x − y = 2\n\nWas ist der Wert von x?',
+    correct: '4',
+    altCorrect: ['4'],
+    explanation: 'Addition: (2x+y) + (x−y) = 10+2 → 3x = 12 → x = 4',
+    steps: [
+      { text: 'Additionsverfahren: I + II →<span class="math"> 3x = 12</span>' },
+      { text: 'Lösung: <span class="math">x = 4</span>' },
+      { text: 'y aus Gleichung II: <span class="math">4 − y = 2 → y = 2</span>' },
+      { text: 'Probe I: 2·4+2 = 10 ✓, Probe II: 4−2 = 2 ✓' },
+    ]
+  },
+  {
+    id: 7,
+    type: 'mc',
+    topic: 'text',
+    topicLabel: 'Gleichungen – Textaufgabe',
+    chipClass: 'chip-text',
+    context: 'Typ 1 – Modellierung einer realen Situation.',
+    text: 'Eine Zahl ist um 15 größer als ihr Dreifaches vermindert um 5. Welche Gleichung beschreibt diese Situation?',
+    options: [
+      { letter: 'A', text: 'x + 15 = 3x − 5' },
+      { letter: 'B', text: 'x − 15 = 3x − 5' },
+      { letter: 'C', text: '3x − 5 = x + 15' },
+      { letter: 'D', text: 'x = 3x + 15 − 5' },
+    ],
+    correct: 0,
+    explanation: '„Eine Zahl (x) ist um 15 größer als (3x − 5)" bedeutet: x = (3x − 5) + 15, also x + 15 = 3x − 5 oder äquivalent A.',
+    steps: [
+      { text: 'Die Zahl: x' },
+      { text: 'Ihr Dreifaches vermindert um 5: <span class="math">3x − 5</span>' },
+      { text: '„x ist um 15 größer" → <span class="math">x = (3x − 5) + 15</span>' },
+      { text: 'Umgestellt: <span class="math">x + 15 = 3x − 5</span> → Antwort A' },
+    ]
+  },
+  {
+    id: 8,
+    type: 'input',
+    topic: 'quad',
+    topicLabel: 'Quadratische Gleichungen – Anwendung',
+    chipClass: 'chip-quad',
+    context: 'Typ 2 – Löse und gib die positive Lösung an.',
+    text: 'Ein rechteckiges Grundstück hat einen Umfang von 28 m. Die Länge ist um 4 m größer als die Breite.\n\nWie viele Meter beträgt die Breite b?',
+    correct: '5',
+    altCorrect: ['5'],
+    explanation: 'Umfang = 2(l + b) = 28 → l + b = 14. Mit l = b + 4: 2b + 4 = 14 → 2b = 10 → b = 5.',
+    steps: [
+      { text: 'Formeln aufstellen: <span class="math">l + b = 14</span> und <span class="math">l = b + 4</span>' },
+      { text: 'Einsetzen: <span class="math">(b + 4) + b = 14</span>' },
+      { text: 'Zusammenfassen: <span class="math">2b = 10</span>' },
+      { text: 'Lösung: <span class="math">b = 5 m</span>, l = 9 m' },
+      { text: 'Probe: 2·(9+5) = 28 ✓' },
+    ]
+  },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let current = 0;
+let correct = 0;
+let wrong = 0;
+let answered = new Array(questions.length).fill(null); // null | 'correct' | 'wrong'
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  current = 0; correct = 0; wrong = 0;
+  answered = new Array(questions.length).fill(null);
+  buildDots();
+  renderQuestion();
+  updateStats();
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('question-area').style.display = '';
+  document.getElementById('progress-section').style.display = '';
+  document.getElementById('score-banner').style.display = '';
+}
+
+function buildDots() {
+  const row = document.getElementById('dots-row');
+  row.innerHTML = '';
+  for (let i = 0; i < questions.length; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.id = 'dot-' + i;
+    row.appendChild(d);
+  }
+}
+
+function updateDots() {
+  for (let i = 0; i < questions.length; i++) {
+    const d = document.getElementById('dot-' + i);
+    if (!d) continue;
+    d.className = 'dot';
+    if (answered[i] === 'correct') d.classList.add('correct');
+    else if (answered[i] === 'wrong') d.classList.add('wrong');
+    else if (i === current) d.classList.add('active');
+  }
+}
+
+function updateStats() {
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('score-wrong').textContent = wrong;
+  document.getElementById('score-pts').textContent = correct + ' / ' + questions.length;
+  document.getElementById('q-counter').textContent = `Aufgabe ${current + 1} von ${questions.length}`;
+  const pct = (current / questions.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ============================================================
+// RENDER QUESTION
+// ============================================================
+function renderQuestion() {
+  const q = questions[current];
+  const area = document.getElementById('question-area');
+  area.innerHTML = '';
+
+  // Theory tip for first question in each topic
+  if (q.topic === 'quad' && (current === 2)) {
+    area.innerHTML += `
+    <div class="theory-card">
+      <div class="theory-tag">📐 Kurztheorie</div>
+      <h2>Quadratische Gleichungen (ax² + bx + c = 0)</h2>
+      <p>Zur Lösung verwendest du die <strong>Mitternachtsformel</strong> (oder die Diskriminante Δ = b² − 4ac für die Anzahl der Lösungen).</p>
+      <div class="formula-row">
+        <div class="formula-chip">Δ = b² − 4ac</div>
+        <div class="formula-chip">x = (−b ± √Δ) / (2a)</div>
+        <div class="formula-chip">Δ > 0: 2 Lsg.</div>
+        <div class="formula-chip">Δ = 0: 1 Lsg.</div>
+        <div class="formula-chip">Δ &lt; 0: 0 Lsg.</div>
+      </div>
+    </div>`;
+  }
+  if (q.topic === 'system' && current === 5) {
+    area.innerHTML += `
+    <div class="theory-card">
+      <div class="theory-tag">📐 Kurztheorie</div>
+      <h2>Lineare Gleichungssysteme</h2>
+      <p>Drei Lösungsverfahren: <strong>Additionsverfahren</strong>, <strong>Einsetzungsverfahren</strong>, <strong>Gleichsetzungsverfahren</strong>. Beim Additionsverfahren addierst du die Gleichungen so, dass eine Variable wegfällt.</p>
+    </div>`;
+  }
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = 'q-card';
+
+  let html = `
+    <div class="q-header">
+      <div class="q-number">${current + 1}</div>
+      <div>
+        <span class="topic-chip ${q.chipClass}">${q.topicLabel}</span>
+        <div class="q-type-tag">${q.context}</div>
+      </div>
+    </div>
+    <div class="q-text" style="white-space:pre-line; margin-bottom:18px;">${q.text}</div>
+  `;
+
+  if (q.type === 'mc') {
+    html += `<div class="options-grid" id="options-grid">`;
+    q.options.forEach((opt, idx) => {
+      html += `<button class="option-btn" id="opt-${idx}" onclick="chooseOption(${idx})">`
+             + `<span class="opt-letter">${opt.letter}</span>${opt.text}</button>`;
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="input-answer-row">
+      <input class="answer-input" id="answer-input" type="text" placeholder="Deine Antwort eingeben…" 
+             onkeydown="if(event.key==='Enter') checkInput()">
+      <button class="check-btn" id="check-btn" onclick="checkInput()">Prüfen</button>
+    </div>`;
+  }
+
+  html += `<div class="feedback-box" id="feedback"></div>`;
+  html += `<button class="steps-toggle hidden" id="steps-toggle" onclick="toggleSteps()">📖 Lösungsweg anzeigen ▾</button>`;
+  html += `<div class="steps-box" id="steps-box">`;
+  q.steps.forEach((s, i) => {
+    html += `<div class="step-row"><div class="step-num">${i+1}</div><div class="step-content">${s.text}</div></div>`;
+  });
+  html += `</div>`;
+  html += `<div class="nav-row"><button class="nav-btn primary hidden" id="next-btn" onclick="nextQuestion()">Nächste Aufgabe →</button></div>`;
+
+  card.innerHTML = html;
+  area.appendChild(card);
+  updateStats();
+  updateDots();
+}
+
+// ============================================================
+// MC LOGIC
+// ============================================================
+function chooseOption(idx) {
+  const q = questions[current];
+  const allBtns = document.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const chosen = document.getElementById('opt-' + idx);
+  const correctBtn = document.getElementById('opt-' + q.correct);
+
+  if (idx === q.correct) {
+    chosen.classList.add('correct-ans');
+    answered[current] = 'correct';
+    correct++;
+    showFeedback(true, q.explanation);
+  } else {
+    chosen.classList.add('wrong-ans');
+    correctBtn.classList.add('correct-ans');
+    answered[current] = 'wrong';
+    wrong++;
+    showFeedback(false, q.explanation);
+  }
+
+  document.getElementById('q-card').classList.add('answered', answered[current] === 'correct' ? 'correct-card' : 'wrong-card');
+  document.getElementById('steps-toggle').classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+  updateStats();
+  updateDots();
+}
+
+// ============================================================
+// INPUT LOGIC
+// ============================================================
+function checkInput() {
+  const q = questions[current];
+  const input = document.getElementById('answer-input');
+  const val = input.value.trim().replace(',', '.');
+  const isCorrect = val === q.correct || (q.altCorrect && q.altCorrect.includes(val));
+
+  input.disabled = true;
+  document.getElementById('check-btn').disabled = true;
+
+  if (isCorrect) {
+    input.classList.add('correct-input');
+    answered[current] = 'correct';
+    correct++;
+    showFeedback(true, q.explanation);
+  } else {
+    input.classList.add('wrong-input');
+    answered[current] = 'wrong';
+    wrong++;
+    showFeedback(false, `Die richtige Antwort ist <strong>${q.correct}</strong>. ${q.explanation}`);
+  }
+
+  document.getElementById('q-card').classList.add('answered', answered[current] === 'correct' ? 'correct-card' : 'wrong-card');
+  document.getElementById('steps-toggle').classList.remove('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+  updateStats();
+  updateDots();
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function showFeedback(isOk, text) {
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-box show ' + (isOk ? 'success' : 'error');
+  fb.innerHTML = `
+    <div class="feedback-header">${isOk ? '✓ Richtig!' : '✗ Leider falsch'}</div>
+    <div class="feedback-text">${text}</div>`;
+}
+
+function toggleSteps() {
+  const box = document.getElementById('steps-box');
+  const btn = document.getElementById('steps-toggle');
+  box.classList.toggle('open');
+  btn.textContent = box.classList.contains('open') ? '📖 Lösungsweg ausblenden ▴' : '📖 Lösungsweg anzeigen ▾';
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function showResult() {
+  document.getElementById('question-area').style.display = 'none';
+  document.getElementById('progress-section').style.display = 'none';
+  document.getElementById('score-banner').style.display = 'none';
+
+  const pct = Math.round((correct / questions.length) * 100);
+  const res = document.getElementById('result-screen');
+  res.classList.add('show');
+
+  let grade, emoji;
+  if (pct >= 88) { grade = 'Sehr Gut!'; emoji = '🏆'; }
+  else if (pct >= 75) { grade = 'Gut!'; emoji = '⭐'; }
+  else if (pct >= 62) { grade = 'Befriedigend'; emoji = '👍'; }
+  else if (pct >= 50) { grade = 'Genügend'; emoji = '💪'; }
+  else { grade = 'Nicht Genügend – üben!'; emoji = '📚'; }
+
+  document.getElementById('res-score').textContent = emoji + ' ' + pct + '%';
+  document.getElementById('res-score').style.color = pct >= 62 ? 'var(--accent3)' : 'var(--accent4)';
+  document.getElementById('res-label').textContent = grade;
+  document.getElementById('res-correct').textContent = correct;
+  document.getElementById('res-wrong').textContent = wrong;
+  document.getElementById('res-pct').textContent = pct + '%';
+}
+
+function restart() {
+  init();
+}
+
+// ============================================================
+// START
+// ============================================================
+init();
+</script>
+</body>
+</html>

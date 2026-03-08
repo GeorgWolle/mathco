@@ -219,48 +219,50 @@ watch(
 
 
 <template>
-  <article class="border-2 border-dashed border-indigo-200 rounded-xl bg-indigo-50 p-8 space-y-6">
+  <!-- Question Card -->
+  <div class="relative overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-[var(--surface)] px-8 py-7 mb-5">
+    <!-- Linker Akzent-Balken -->
+    <div class="absolute inset-y-0 left-0 w-1 rounded-l bg-[var(--accent)]"></div>
 
-    <header class="space-y-3">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <span
-          class="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-indigo-700"
-        >
-          Aufgabe {{ props.task.id ?? '–' }}
-        </span>
-        <span v-if="page" class="text-xs font-medium text-slate-500">
-          Seite {{ page }}
-        </span>
+    <!-- q-header -->
+    <div class="flex items-start gap-[14px] mb-5">
+      <!-- q-number Badge -->
+      <div
+        class="flex shrink-0 items-center justify-center h-9 min-w-[36px] rounded-[10px] font-syne font-bold text-[0.9rem] text-[var(--text)]"
+        style="background: linear-gradient(135deg, var(--accent), #5a53d4); box-shadow: 0 4px 12px rgba(124,111,247,0.3);"
+      >
+        {{ props.task.id ?? '–' }}
       </div>
-      <h2 class="text-3xl font-semibold leading-tight text-indigo-900">
-        {{ category }}
-      </h2>
-    </header>
+      <!-- Titel / Kategorie -->
+      <div>
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-muted)] mb-1">
+          {{ category || 'Aufgabe' }}<span v-if="page"> · Seite {{ page }}</span>
+        </p>
+        <p class="text-[1.02rem] leading-[1.65] font-semibold text-[var(--text)]">
+          {{ title }}
+        </p>
+      </div>
+    </div>
 
-
-
-    <section v-if="intro" class="mb-2">
-      <p class="text-base text-slate-600" v-html="intro" v-math-render></p>
+    <!-- Intro / Kontext -->
+    <section v-if="intro" class="mb-4">
+      <p class="text-[0.93rem] leading-[1.7] text-[var(--text-muted)]" v-html="intro" v-math-render></p>
     </section>
 
-    <section v-if="props.task.aufgabenstellung" class="mb-2">
-      <h3 class="text-sm font-semibold uppercase tracking-wide text-indigo-500 mb-1">Aufgabenstellung</h3>
-      <p class="text-base text-slate-700" v-html="props.task.aufgabenstellung" v-math-render></p>
+    <!-- Aufgabenstellung -->
+    <section v-if="props.task.aufgabenstellung" class="mb-5">
+      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-[var(--accent2)] mb-2">Aufgabenstellung</p>
+      <p class="text-[1.02rem] leading-[1.65] text-[var(--text)]" v-html="props.task.aufgabenstellung" v-math-render></p>
     </section>
 
-    <section v-if="isMatchingTask && pairs.length" class="space-y-3">
-      <h3 class="text-sm font-semibold uppercase tracking-wide text-indigo-500">Zuordnungsaufgabe</h3>
-      <p v-if="instruction" class="text-sm text-slate-600" v-html="instruction" v-math-render></p>
+    <!-- Zuordnungsaufgabe -->
+    <section v-if="isMatchingTask && pairs.length" class="space-y-4 mt-4">
+      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)]">Zuordnungsaufgabe</p>
+      <p v-if="instruction" class="text-[0.93rem] text-[var(--text-muted)]" v-html="instruction" v-math-render></p>
       <div class="grid gap-5 md:grid-cols-2">
-        <div
-          v-for="(pair, idx) in pairs"
-          :key="pair.left + '-' + idx"
-          class="rounded-2xl border border-indigo-100 bg-white px-5 py-6 shadow-sm space-y-4"
-        >
-          <div>
-            <p class="text-xs uppercase tracking-wide text-slate-500">Menge {{ idx + 1 }}</p>
-            <p class="mt-2 text-2xl font-semibold text-indigo-900" v-html="pair.left" v-math-render></p>
-          </div>
+        <div v-for="(pair, idx) in pairs" :key="pair.left + '-' + idx">
+          <p class="text-[0.7rem] uppercase tracking-wide text-[var(--text-muted)] mb-1">Menge {{ idx + 1 }}</p>
+          <p class="text-2xl font-semibold text-[var(--text)] mb-2" v-html="pair.left" v-math-render></p>
           <TaskOptionDropdown
             v-model="setSelections[idx]"
             :options="choices"
@@ -272,64 +274,60 @@ watch(
       </div>
     </section>
 
-    <section v-if="isMultiChoiceTask && choices.length" class="space-y-4">
+    <!-- Multi-Choice -->
+    <section v-if="isMultiChoiceTask && choices.length" class="space-y-4 mt-4">
       <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wide text-indigo-500">Antwortoptionen</h3>
-        <p v-if="instruction" class="text-sm text-slate-600" v-html="instruction" v-math-render></p>
-        <p v-if="selectCount" class="text-xs font-semibold uppercase text-slate-500">
+        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)] mb-1">Antwortoptionen</p>
+        <p v-if="instruction" class="text-[0.93rem] text-[var(--text-muted)]" v-html="instruction" v-math-render></p>
+        <p v-if="selectCount" class="text-[0.75rem] font-semibold uppercase text-[var(--text-muted)] mt-1">
           Wähle {{ selectCount }} Optionen.
         </p>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-3 sm:grid-cols-2">
         <button
           v-for="option in choices"
           :key="`choice-${option.key}`"
           type="button"
-          class="flex items-center justify-between rounded-2xl border px-4 py-4 text-left shadow-sm transition"
+          class="flex items-center justify-between rounded-xl border px-4 py-3 text-left transition"
           :class="[
             isChoiceSelected(option.key)
-              ? 'border-indigo-500 bg-indigo-50 shadow-md'
-              : 'border-slate-200 bg-white hover:border-indigo-300'
+              ? 'border-[var(--accent2)] bg-[var(--surface2)]'
+              : 'border-[var(--border)] bg-[var(--surface2)] hover:border-[var(--accent2)]'
           ]"
           :aria-pressed="isChoiceSelected(option.key)"
           @click="toggleChoiceSelection(option.key)"
         >
-          <div class="flex items-center gap-4">
-            <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
+          <div class="flex items-center gap-3">
+            <span
+              class="rounded-full px-2 py-0.5 text-xs font-semibold border"
+              :class="isChoiceSelected(option.key)
+                ? 'bg-[var(--accent2)] text-[var(--surface)] border-[var(--accent2)]'
+                : 'bg-[var(--surface)] text-[var(--accent2)] border-[var(--border)]'"
+            >
               {{ option.key }}
             </span>
-            <div class="text-base font-medium text-slate-800" v-html="option.display" v-math-render></div>
+            <div class="text-[0.93rem] text-[var(--text)]" v-html="option.display" v-math-render></div>
           </div>
           <svg
             v-if="isChoiceSelected(option.key)"
-            class="h-5 w-5 text-indigo-600"
+            class="h-5 w-5 shrink-0 text-[var(--accent2)]"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
-            <path
-              fill-rule="evenodd"
-              d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.5 7.563a1 1 0 0 1-1.434-.01l-3.5-3.563a1 1 0 1 1 1.44-1.39l2.787 2.837 6.787-6.84a1 1 0 0 1 1.414-.01z"
-              clip-rule="evenodd"
-            />
+            <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.5 7.563a1 1 0 0 1-1.434-.01l-3.5-3.563a1 1 0 1 1 1.44-1.39l2.787 2.837 6.787-6.84a1 1 0 0 1 1.414-.01z" clip-rule="evenodd" />
           </svg>
         </button>
       </div>
-      <p class="text-sm text-slate-500">
-        Ausgewählt: {{ choiceSelections.length }}
-        <span v-if="selectCount">
-          / {{ selectCount }}
-        </span>
+      <p class="text-[0.82rem] text-[var(--text-muted)]">
+        Ausgewählt: {{ choiceSelections.length }}<span v-if="selectCount"> / {{ selectCount }}</span>
       </p>
     </section>
 
-    <section v-if="punkte || bewertung" class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm shadow-sm">
-      <p v-if="punkte" class="font-semibold text-slate-700">
-        Punkte: {{ punkte }}
-      </p>
-      <p v-if="bewertung" class="text-slate-600" :class="{ 'mt-2': punkte }">
-        {{ bewertung }}
-      </p>
+    <!-- Punkte / Bewertung -->
+    <section v-if="punkte || bewertung" class="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-5 py-4 text-sm mt-6">
+      <p v-if="punkte" class="font-semibold font-syne text-[var(--accent2)]">Punkte: {{ punkte }}</p>
+      <p v-if="bewertung" class="text-[var(--text-muted)]" :class="{ 'mt-2': punkte }">{{ bewertung }}</p>
     </section>
-  </article>
+  </div>
 </template>
