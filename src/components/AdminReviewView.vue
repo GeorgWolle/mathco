@@ -211,8 +211,8 @@ onMounted(() => {
             :key="row.id"
             class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"
           >
-            <p class="text-sm font-semibold text-slate-500" v-html="renderRichText(row.label, true)"></p>
-            <p class="text-xl font-medium text-slate-900 text-center" v-html="renderRichText(row.detail, true)"></p>
+            <p class="text-sm font-semibold text-slate-500" v-html="row.label" v-math-render></p>
+            <p class="text-xl font-medium text-slate-900 text-center" v-html="row.detail" v-math-render></p>
             <span
               v-if="row.badge"
               class="mt-2 inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600"

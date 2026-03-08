@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "task_id": 1,
+        "page": 2,
+        "aufgaben_id": "1_1567",
+        "maturatermin": "Wintertermin 2026",
+        "typ": "Typ 1",
+        "punkte": "[0 / ½ / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [
+            0,
+            0.5,
+            1
+        ],
+        "type": "solution",
+        "bewertung": "Ein Punkt für vier richtige Zuordnungen, ein halber Punkt für zwei oder drei richtige Zuordnungen.",
+        "correct_pairs": [
+            {
+                "left": "$\\mathbb{N}$",
+                "right_key": "C"
+            },
+            {
+                "left": "$\\mathbb{Z} \\setminus \\mathbb{N}$",
+                "right_key": "D"
+            },
+            {
+                "left": "$\\mathbb{Q} \\setminus \\mathbb{Z}$",
+                "right_key": "F"
+            },
+            {
+                "left": "$\\mathbb{C} \\setminus \\mathbb{R}$",
+                "right_key": "E"
+            }
+        ],
+        "loesungsweg": [
+            {
+                "step": 1,
+                "text": "$\\frac{20}{5} = 4 \\in \\mathbb{N}$ $\\Rightarrow$ C"
+            },
+            {
+                "step": 2,
+                "text": "$-\\sqrt{169} = -13 \\in \\mathbb{Z} \\setminus \\mathbb{N}$ $\\Rightarrow$ D"
+            },
+            {
+                "step": 3,
+                "text": "$1{,}\\overline{4} = \\frac{13}{9} \\in \\mathbb{Q} \\setminus \\mathbb{Z}$ $\\Rightarrow$ F"
+            },
+            {
+                "step": 4,
+                "text": "$2i \\in \\mathbb{C} \\setminus \\mathbb{R}$ $\\Rightarrow$ E"
+            }
+        ],
+        "needs_review": false
+  }
+]

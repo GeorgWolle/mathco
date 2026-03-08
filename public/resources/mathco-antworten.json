@@ -1,97 +1,72 @@
 {
-  "generatedAt": "2026-03-07T18:20:23.252Z",
+  "generatedAt": "2026-03-08T09:53:22.049Z",
   "totalTasks": 3,
   "answers": [
     {
       "taskKey": "1",
       "taskId": 1,
       "page": 1,
-      "title": "Zahlenmengen",
+      "title": "Aufgabe",
       "interactionType": "matching",
       "selectCount": null,
-      "isStructured": true,
       "selections": [
         {
-          "category": "\\mathbb{N}",
-          "categoryIsLatex": true,
+          "category": "$\\mathbb{N}$",
+          "selectedKey": "B",
+          "selectedDisplay": "$\\frac{\\pi}{4}$"
+        },
+        {
+          "category": "$\\mathbb{Z} \\setminus \\mathbb{N}$",
           "selectedKey": "C",
-          "selectedDisplay": "\\frac{20}{5}",
-          "selectedIsLatex": true
+          "selectedDisplay": "$\\frac{20}{5}$"
         },
         {
-          "category": "\\mathbb{Z} \\setminus \\mathbb{N}",
-          "categoryIsLatex": true,
+          "category": "$\\mathbb{Q} \\setminus \\mathbb{Z}$",
+          "selectedKey": "B",
+          "selectedDisplay": "$\\frac{\\pi}{4}$"
+        },
+        {
+          "category": "$\\mathbb{C} \\setminus \\mathbb{R}$",
           "selectedKey": "D",
-          "selectedDisplay": "-\\sqrt{169}",
-          "selectedIsLatex": true
-        },
-        {
-          "category": "\\mathbb{Q} \\setminus \\mathbb{Z}",
-          "categoryIsLatex": true,
-          "selectedKey": "A",
-          "selectedDisplay": "\\sqrt{7}",
-          "selectedIsLatex": true
-        },
-        {
-          "category": "\\mathbb{C} \\setminus \\mathbb{R}",
-          "categoryIsLatex": true,
-          "selectedKey": "E",
-          "selectedDisplay": "2 \\cdot i",
-          "selectedIsLatex": true
+          "selectedDisplay": "$-\\sqrt{169}$"
         }
       ],
       "order": 0
     },
     {
-      "taskKey": "Aufgabe",
-      "taskId": null,
-      "page": null,
-      "title": "Aufgabe",
-      "interactionType": null,
-      "selectCount": null,
-      "isStructured": false,
-      "order": 0
-    },
-    {
-      "taskKey": "3",
-      "taskId": 3,
+      "taskKey": "2",
+      "taskId": 2,
       "page": 3,
-      "title": "Terme",
+      "title": "Aufgabe",
       "interactionType": "multi_choice",
       "selectCount": 2,
-      "isStructured": true,
       "selections": [
         {
           "key": "1",
-          "display": "a - b",
-          "isLatex": true
+          "display": "$a - b$"
         },
         {
-          "key": "4",
-          "display": "(-a - b)^{2}",
-          "isLatex": true
+          "key": "2",
+          "display": "$\\frac{-a}{b}$"
         }
       ],
       "order": 1
     },
     {
-      "taskKey": "5",
-      "taskId": 5,
+      "taskKey": "3",
+      "taskId": 3,
       "page": 5,
-      "title": "Zahlenmengen",
+      "title": "Aufgabe",
       "interactionType": "multi_choice",
       "selectCount": 2,
-      "isStructured": true,
       "selections": [
         {
           "key": "2",
-          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
-          "isLatex": true
+          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$."
         },
         {
-          "key": "5",
-          "display": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen.",
-          "isLatex": true
+          "key": "3",
+          "display": "Jedes Element von $B$ ist auch Element von $A$."
         }
       ],
       "order": 2
