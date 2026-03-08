@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useMathRenderer } from '../composables/useMathRenderer'
 
 const props = defineProps({
   modelValue: { type: [String, Number], default: '' },
@@ -11,12 +10,12 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
-const { renderRichText } = useMathRenderer()
 
 const isOpen = ref(false)
 const dropdownRoot = ref(null)
 
-const selectedOption = computed(() => props.options.find((opt) => opt.label === props.modelValue) || null)
+
+const selectedOption = computed(() => props.options.find((opt) => opt.key === props.modelValue) || null)
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value
@@ -26,8 +25,9 @@ const closeDropdown = () => {
   isOpen.value = false
 }
 
-const selectOption = (label) => {
-  emit('update:modelValue', label)
+
+const selectOption = (key) => {
+  emit('update:modelValue', key)
   closeDropdown()
 }
 
@@ -64,17 +64,18 @@ onBeforeUnmount(() => {
       >
         <div class="flex flex-col">
           <span v-if="selectedOption" class="text-xs font-semibold uppercase text-slate-500">
-            Auswahl {{ selectedOption.label }}
+            Auswahl {{ selectedOption.key }}
           </span>
           <span v-else class="text-slate-400">{{ placeholder }}</span>
 
           <div v-if="selectedOption" class="flex items-center gap-3">
             <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
-              {{ selectedOption.label }}
+              {{ selectedOption.key }}
             </span>
             <div
               class="text-base font-medium text-slate-800"
-              v-html="renderRichText(selectedOption.value, { treatAsLatex: selectedOption.isLatex })"
+              v-html="selectedOption.display"
+              v-math-render
             ></div>
           </div>
         </div>
@@ -102,23 +103,24 @@ onBeforeUnmount(() => {
       >
         <li
           v-for="option in options"
-          :key="`${dropdownId}-${option.label}`"
+          :key="`${dropdownId}-${option.key}`"
           role="option"
           class="flex cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2 text-sm text-slate-800 hover:bg-indigo-50"
-          :aria-selected="modelValue === option.label"
-          @click="selectOption(option.label)"
+          :aria-selected="modelValue === option.key"
+          @click="selectOption(option.key)"
         >
           <div class="flex items-center gap-3">
             <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700">
-              {{ option.label }}
+              {{ option.key }}
             </span>
             <div
               class="text-base"
-              v-html="renderRichText(option.value, { treatAsLatex: option.isLatex })"
+              v-html="option.display"
+              v-math-render
             ></div>
           </div>
           <svg
-            v-if="modelValue === option.label"
+            v-if="modelValue === option.key"
             class="h-4 w-4 text-indigo-600"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"

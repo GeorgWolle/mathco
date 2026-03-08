@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-01T15:18:26.289Z",
+  "generatedAt": "2026-03-07T18:20:23.252Z",
   "totalTasks": 3,
   "answers": [
     {
@@ -21,22 +21,22 @@
         {
           "category": "\\mathbb{Z} \\setminus \\mathbb{N}",
           "categoryIsLatex": true,
-          "selectedKey": "C",
-          "selectedDisplay": "\\frac{20}{5}",
+          "selectedKey": "D",
+          "selectedDisplay": "-\\sqrt{169}",
           "selectedIsLatex": true
         },
         {
           "category": "\\mathbb{Q} \\setminus \\mathbb{Z}",
           "categoryIsLatex": true,
-          "selectedKey": "C",
-          "selectedDisplay": "\\frac{20}{5}",
+          "selectedKey": "A",
+          "selectedDisplay": "\\sqrt{7}",
           "selectedIsLatex": true
         },
         {
           "category": "\\mathbb{C} \\setminus \\mathbb{R}",
           "categoryIsLatex": true,
-          "selectedKey": "C",
-          "selectedDisplay": "\\frac{20}{5}",
+          "selectedKey": "E",
+          "selectedDisplay": "2 \\cdot i",
           "selectedIsLatex": true
         }
       ],
@@ -62,13 +62,13 @@
       "isStructured": true,
       "selections": [
         {
-          "key": "3",
-          "display": "a + b",
+          "key": "1",
+          "display": "a - b",
           "isLatex": true
         },
         {
-          "key": "2",
-          "display": "\\frac{-a}{b}",
+          "key": "4",
+          "display": "(-a - b)^{2}",
           "isLatex": true
         }
       ],
@@ -84,13 +84,13 @@
       "isStructured": true,
       "selections": [
         {
-          "key": "3",
-          "display": "Jedes Element von $B$ ist auch Element von $A$.",
+          "key": "2",
+          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
           "isLatex": true
         },
         {
-          "key": "2",
-          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
+          "key": "5",
+          "display": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen.",
           "isLatex": true
         }
       ],

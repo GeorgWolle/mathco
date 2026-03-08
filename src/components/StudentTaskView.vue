@@ -11,17 +11,18 @@ const payload = computed(() => ({
   answers: props.submissionTemplate
 }))
 
-const structuredTasks = ref(null)
+const tasks = ref([])
 const activeTaskIndex = ref(0)
 const loadError = ref('')
 const canAdvance = ref(false)
 const debugOverride = ref(false)
 const taskResponses = ref({})
 
-const totalTasks = computed(() => structuredTasks.value?.length ?? 0)
+
+const totalTasks = computed(() => tasks.value.length)
 const progressPercent = computed(() => {
   if (!totalTasks.value) return 0
-  return ((activeTaskIndex.value) / totalTasks.value) * 100
+  return ((activeTaskIndex.value + 1) / totalTasks.value) * 100
 })
 const isLastTask = computed(() => totalTasks.value > 0 && activeTaskIndex.value === totalTasks.value - 1)
 const finishDisabled = computed(() => {
@@ -30,18 +31,9 @@ const finishDisabled = computed(() => {
   return !canAdvance.value
 })
 
-const fallbackTask = {
-  meta: {
-    title: 'Lade Aufgabe…',
-    subtitle: 'Bitte warten.',
-    progressText: '',
-    progressPercent: 0,
-  },
-}
 
 const currentTask = computed(() => {
-  if (!structuredTasks.value) return fallbackTask
-  return structuredTasks.value[activeTaskIndex.value] ?? fallbackTask
+  return tasks.value[activeTaskIndex.value] ?? {}
 })
 
 const fetchTaskFile = async (path) => {
@@ -51,7 +43,7 @@ const fetchTaskFile = async (path) => {
 }
 
 const isNextDisabled = computed(() => {
-  if (!structuredTasks.value) return true
+  if (!tasks.value.length) return true
   if (debugOverride.value) return false
   return !canAdvance.value
 })
@@ -88,8 +80,8 @@ const goToPreviousTask = () => {
 }
 
 const goToNextTask = () => {
-  if (!structuredTasks.value) return
-  if (activeTaskIndex.value >= structuredTasks.value.length - 1) return
+  if (!tasks.value.length) return
+  if (activeTaskIndex.value >= tasks.value.length - 1) return
   activeTaskIndex.value += 1
   scrollToTopSmooth()
 }
@@ -118,32 +110,30 @@ const downloadResults = () => {
 
 onMounted(async () => {
   try {
-    const data = await fetchTaskFile('/resources/tasks.json')
-    structuredTasks.value = data.filter((el) => el.type === 'task')
+    const data = await fetchTaskFile('/resources/tasks_new.json')
+    tasks.value = Array.isArray(data) ? data : []
   } catch (err) {
     console.error('Fehler beim Laden tasks_new.json', err)
-    loadError.value = 'Konnte neue Aufgabenstruktur nicht laden.'
+    loadError.value = 'Konnte Aufgaben nicht laden.'
   }
 })
 </script>
 
 <template>
   <section class="w-full bg-white rounded-2xl shadow-2xl overflow-hidden">
-    <TaskHero
-      :title="currentTask.meta.title"
-      :progress-percent="progressPercent"
-      progress-text=""
-    />
-
-    <section class="px-10 py-8 space-y-7">
-
-      <Task
-        :task="currentTask"
-        @requirement-change="handleRequirementChange"
-        @answer-change="handleAnswerChange"
+    <template v-if="tasks.length">
+      <TaskHero
+        :title="currentTask.title || 'Aufgabe'"
+        :progress-percent="progressPercent"
+        progress-text=""
       />
-
-      <div class="flex flex-wrap items-center justify-between gap-3 mt-6">
+      <section class="px-10 py-8 space-y-7">
+        <Task
+          :task="currentTask"
+          @requirement-change="handleRequirementChange"
+          @answer-change="handleAnswerChange"
+        />
+        <div class="flex flex-wrap items-center justify-between gap-3 mt-6">
         <button
           v-if="debugOverride"
           type="button"
@@ -188,18 +178,11 @@ onMounted(async () => {
         >
           Nächstes Beispiel
         </button>
-      </div>
-      <!--<div v-if="loadError" class="rounded-md bg-rose-50 border border-rose-100 p-4 text-rose-700">
-        {{ loadError }}
-      </div>
-
-      <div v-else-if="firstLoaded" class="rounded-lg bg-white p-4 border border-slate-100">
-        <h3 class="text-lg font-semibold mb-2">Geladener Eintrag (tasks.json)</h3>
-        <p class="text-sm text-slate-600 mb-3">Seite: {{ firstLoaded.page ?? '–' }}</p>
-        <pre class="whitespace-pre-wrap text-sm text-slate-800 bg-slate-50 p-4 rounded">{{ firstLoaded.text }}</pre>
-      </div>
-
-      <div v-else class="text-slate-500">Lade Aufgaben…</div>-->
-    </section>
+        </div>
+      </section>
+    </template>
+    <template v-else>
+      <div class="p-10 text-center text-slate-500 text-lg">Lade Aufgaben…</div>
+    </template>
   </section>
 </template>
