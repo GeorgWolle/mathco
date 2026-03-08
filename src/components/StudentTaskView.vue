@@ -110,7 +110,7 @@ const downloadResults = () => {
 
 onMounted(async () => {
   try {
-    const data = await fetchTaskFile('/resources/tasks_new.json')
+    const data = await fetchTaskFile('/resources/tasks.json')
     tasks.value = Array.isArray(data) ? data : []
   } catch (err) {
     console.error('Fehler beim Laden tasks_new.json', err)

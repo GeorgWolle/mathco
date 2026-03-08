@@ -7,8 +7,33 @@ const reviewItems = ref([])
 const activeIndex = ref(0)
 const parseError = ref('')
 const statusMessage = ref('')
+
 const reviewSectionRef = ref(null)
 const DEFAULT_SAMPLE_PATH = '/resources/mathco-antworten.json'
+const SOLUTIONS_PATH = '/resources/solutions.json'
+const solutions = ref([])
+// Lösung für aktuelle Antwort finden
+const currentSolution = computed(() => {
+  if (!currentAnswer.value) return null
+  const taskId = currentAnswer.value.taskId || currentAnswer.value.task_id || currentAnswer.value.id
+  return solutions.value.find(sol => String(sol.task_id) === String(taskId)) || null
+})
+
+// Hilfsfunktion: Prüfe ob Auswahl korrekt ist (Matching oder Multi-Choice)
+function isSelectionCorrect(selection, solution) {
+  if (!solution) return null
+  // Matching-Aufgabe
+  if (Array.isArray(solution.correct_pairs) && selection.category) {
+    const correct = solution.correct_pairs.find(p => p.left === selection.category)
+    if (!correct) return null
+    return correct.right_key === selection.selectedKey
+  }
+  // Multi-Choice-Aufgabe
+  if (Array.isArray(solution.correct_keys) && selection.key) {
+    return solution.correct_keys.includes(selection.key)
+  }
+  return null
+}
 
 const hasReviewSession = computed(() => reviewItems.value.length > 0)
 const currentAnswer = computed(() => (hasReviewSession.value ? reviewItems.value[activeIndex.value] ?? null : null))
@@ -30,31 +55,44 @@ const selectionRows = computed(() => {
     const label = selection.category ?? selection.key ?? `Auswahl ${idx + 1}`
     const detail = selection.selectedDisplay ?? selection.display ?? selection.selectedKey ?? selection.key ?? 'Keine Auswahl'
     const badgeKey = selection.selectedKey && selection.selectedKey !== detail ? selection.selectedKey : selection.key ?? null
+    // Prüfe Korrektheit
+    const correct = isSelectionCorrect(selection, currentSolution.value)
     return {
       id: `${label}-${idx}`,
       label,
       detail,
-      badge: badgeKey
+      badge: badgeKey,
+      correct
     }
   })
 })
 
+
+// Metadaten-Header: src, category, maturatermin, id, typ aus Lösung, Rest aus Antwort
 const summaryFields = [
-  { key: 'taskKey', label: 'Schlüssel' },
-  { key: 'title', label: 'Titel' },
-  { key: 'interactionType', label: 'Aufgabenformat' },
-  { key: 'selectCount', label: 'Erwartete Auswahl' },
-  { key: 'page', label: 'Seite' },
-  { key: 'taskId', label: 'Original-ID' }
+  { key: 'source', label: 'Quelle' },
+  { key: 'category', label: 'Kategorie' },
+  { key: 'maturatermin', label: 'Termin' },
+  { key: 'id', label: 'Lösungs-ID' },
+  { key: 'typ', label: 'Typ' },
 ]
 
 const currentSummary = computed(() => {
-  if (!currentAnswer.value) return []
+  if (!currentAnswer.value && !currentSolution.value) return []
   return summaryFields
-    .map((field) => ({
-      label: field.label,
-      value: currentAnswer.value[field.key] ?? '–'
-    }))
+    .map((field) => {
+      // src, category, maturatermin, id, typ aus Lösung, Rest aus Antwort
+      let value = undefined
+      if (['source', 'category', 'maturatermin', 'id', 'typ'].includes(field.key)) {
+        value = currentSolution.value?.[field.key] ?? '–'
+      } else {
+        value = currentAnswer.value?.[field.key] ?? '–'
+      }
+      return {
+        label: field.label,
+        value
+      }
+    })
     .filter((entry) => entry.value !== undefined && entry.value !== null && entry.value !== '')
 })
 
@@ -136,8 +174,22 @@ const loadDefaultSubmission = async () => {
   }
 }
 
+
+// Lösungen laden
+const loadSolutions = async () => {
+  try {
+    const res = await fetch(SOLUTIONS_PATH)
+    if (!res.ok) throw new Error(`Lösungen nicht gefunden (${res.status}).`)
+    const data = await res.json()
+    solutions.value = Array.isArray(data) ? data : []
+  } catch (err) {
+    console.warn('Konnte solutions.json nicht laden', err)
+  }
+}
+
 onMounted(() => {
   loadDefaultSubmission()
+  loadSolutions()
 })
 </script>
 
@@ -196,7 +248,16 @@ onMounted(() => {
       <div class="grid gap-4 rounded-2xl border border-slate-100 bg-slate-50/60 p-5 sm:grid-cols-3">
         <div v-for="summary in currentSummary" :key="summary.label" class="space-y-1">
           <p class="text-xs uppercase tracking-wide text-slate-400">{{ summary.label }}</p>
-          <p class="text-base font-medium text-slate-900">{{ summary.value }}</p>
+          <p class="text-base font-medium text-slate-900">
+            <template v-if="summary.label === 'Quelle' && summary.value && summary.value !== '–'">
+              <a :href="summary.value" target="_blank" rel="noopener" class="underline text-indigo-700 hover:text-indigo-500">
+                {{ summary.value.split('/').pop() }}
+              </a>
+            </template>
+            <template v-else>
+              {{ summary.value }}
+            </template>
+          </p>
         </div>
       </div>
 
@@ -209,9 +270,13 @@ onMounted(() => {
           <article
             v-for="row in selectionRows"
             :key="row.id"
-            class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm"
+            class="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm flex flex-col gap-2"
           >
-            <p class="text-sm font-semibold text-slate-500" v-html="row.label" v-math-render></p>
+            <div class="flex items-center gap-2">
+              <p class="text-sm font-semibold text-slate-500 flex-1" v-html="row.label" v-math-render></p>
+              <span v-if="row.correct === true" class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-700">✔️ korrekt</span>
+              <span v-else-if="row.correct === false" class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">✗ falsch</span>
+            </div>
             <p class="text-xl font-medium text-slate-900 text-center" v-html="row.detail" v-math-render></p>
             <span
               v-if="row.badge"
@@ -221,6 +286,12 @@ onMounted(() => {
             </span>
           </article>
         </div>
+              <div v-if="currentSolution && currentSolution.loesungsweg && currentSolution.loesungsweg.length" class="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
+                <h4 class="text-base font-semibold text-indigo-700 mb-2">Lösungsweg</h4>
+                <ol class="list-decimal list-inside space-y-1">
+                  <li v-for="step in currentSolution.loesungsweg" :key="step.step" class="text-slate-800" v-html="step.text" v-math-render></li>
+                </ol>
+              </div>
         <p v-else class="rounded-xl border border-dashed border-slate-200 px-4 py-3 text-sm text-slate-500">
           Keine Auswahl-Daten für diese Antwort gefunden.
         </p>

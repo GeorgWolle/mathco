@@ -5,7 +5,9 @@
         "page": 2,
         "aufgaben_id": "1_1567",
         "maturatermin": "Wintertermin 2026",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
         "typ": "Typ 1",
+        "category": "Zahlenmengen*",
         "punkte": "[0 / ½ / 1 P.]",
         "punkte_max": 1,
         "punkte_stufen": [
@@ -52,5 +54,100 @@
             }
         ],
         "needs_review": false
-  }
+    },
+    {
+        "id": 2,
+        "task_id": 2,
+        "page": 4,
+        "aufgaben_id": "1_1567",
+        "maturatermin": "Wintertermin 2026",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
+        "typ": "Typ 1",
+        "category": "Terme*",
+        "punkte": "[0 / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [
+            0,
+            1
+        ],
+        "type": "solution",
+        "bewertung": "Ein Punkt für das richtige Ankreuzen.",
+        "correct_keys": [
+            "2",
+            "4"
+        ],
+        "loesungsweg": [
+            {
+                "step": 1,
+                "text": "$a = -4b$ einsetzen und jeden Term prüfen:"
+            },
+            {
+                "step": 2,
+                "text": "$a - b = -4b - b = -5b$ → kann negativ sein → $\\notin \\mathbb{N}$"
+            },
+            {
+                "step": 3,
+                "text": "$\\frac{-a}{b} = \\frac{4b}{b} = 4 \\in \\mathbb{N}$ $\\checkmark$"
+            },
+            {
+                "step": 4,
+                "text": "$a + b = -4b + b = -3b$ → kann negativ sein → $\\notin \\mathbb{N}$"
+            },
+            {
+                "step": 5,
+                "text": "$(-a - b)^{2} = (4b - b)^{2} = (-3b)^{2} = 9b^{2} \\in \\mathbb{N}$ $\\checkmark$"
+            },
+            {
+                "step": 6,
+                "text": "$a \\cdot b = -4b^{2} < 0$ → $\\notin \\mathbb{N}$"
+            }
+        ],
+        "needs_review": false
+    },
+    {
+        "id": 3,
+        "task_id": 3,
+        "page": 6,
+        "seite_von": 2,
+        "aufgaben_id": "1_1425",
+        "maturatermin": "Wintertermin 2025",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
+        "typ": "Typ 1",
+        "category": "Zahlenmengen",
+        "punkte": "[0 / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [
+            0,
+            1
+        ],
+        "type": "solution",
+        "bewertung": "Ein Punkt für das richtige Ankreuzen.",
+        "correct_keys": [
+            "3",
+            "5"
+        ],
+        "loesungsweg": [
+            {
+                "step": 1,
+                "text": "Aussage 1: Das Intervall $(-1, 0)$ enthält keine ganzen Zahlen → falsch"
+            },
+            {
+                "step": 2,
+                "text": "Aussage 2: z.B. $(-0{,}5) + (-0{,}5) = -1 \\notin A$ (offenes Intervall) → falsch"
+            },
+            {
+                "step": 3,
+                "text": "Aussage 3: $B \\subseteq \\mathbb{Q} \\subseteq \\mathbb{R}$, gleiches Intervall $\\Rightarrow B \\subseteq A$ $\\checkmark$"
+            },
+            {
+                "step": 4,
+                "text": "Aussage 4: z.B. $(-0{,}5) \\cdot (-0{,}5) = 0{,}25 \\notin A$ (nur negative Werte in $A$) → falsch"
+            },
+            {
+                "step": 5,
+                "text": "Aussage 5: $\\mathbb{R} \\subset \\mathbb{C}$ und $\\mathbb{Q} \\subset \\mathbb{C}$ $\\Rightarrow A \\subset \\mathbb{C},\\; B \\subset \\mathbb{C}$ $\\checkmark$"
+            }
+        ],
+        "needs_review": false
+    }
 ]

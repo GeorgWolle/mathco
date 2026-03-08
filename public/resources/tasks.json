@@ -1,293 +1,141 @@
 [
-  {
-    "page": 1,
-    "id": 1,
-    "type": "task",
-    "meta": {
-      "title": "Zahlenmengen",
-      "term": "Wintertermin 2026",
-      "task_id": "1_1567",
-      "aufgabentyp": "Typ 1",
-      "grundkompetenz": "AG 1.1",
-      "punkte": "[0 / ½ / 1 P.]",
-      "bewertung": "Ein Punkt für vier richtige Zuordnungen, ein halber Punkt für zwei oder drei richtige Zuordnungen."
-    },
-    "text": "Im Folgenden sind vier Zahlenmengen und sechs Zahlen angegeben.\nOrdnen Sie den vier Zahlenmengen jeweils diejenige Zahl aus A bis F zu, die in dieser Zahlenmenge enthalten ist.",
-    "interaction": {
-      "type": "matching",
-      "categories": [
-        { "label": "\\mathbb{N}", "label_latex": true },
-        { "label": "\\mathbb{Z} \\setminus \\mathbb{N}", "label_latex": true },
-        { "label": "\\mathbb{Q} \\setminus \\mathbb{Z}", "label_latex": true },
-        { "label": "\\mathbb{C} \\setminus \\mathbb{R}", "label_latex": true }
-      ],
-      "choices": [
-        { "key": "A", "display": "\\sqrt{7}", "latex": true },
-        { "key": "B", "display": "\\frac{\\pi}{4}", "latex": true },
-        { "key": "C", "display": "\\frac{20}{5}", "latex": true },
-        { "key": "D", "display": "-\\sqrt{169}", "latex": true },
-        { "key": "E", "display": "2 \\cdot i", "latex": true },
-        { "key": "F", "display": "1{,}\\overline{4}", "latex": true }
-      ]
-    }
-  },
-  {
-    "page": 2,
-    "id": 2,
-    "type": "solution",
-    "task_id": 1,
-    "correct_answers": [
-      {
-        "category": "\\mathbb{N}",
-        "category_latex": true,
-        "answer_key": "C",
-        "answer_display": "\\frac{20}{5} = 4",
-        "answer_latex": true,
-        "explanation": "\\frac{20}{5} = 4 \\in \\mathbb{N}"
-      },
-      {
-        "category": "\\mathbb{Z} \\setminus \\mathbb{N}",
-        "category_latex": true,
-        "answer_key": "D",
-        "answer_display": "-\\sqrt{169} = -13",
-        "answer_latex": true,
-        "explanation": "-\\sqrt{169} = -13 \\in \\mathbb{Z},\\; -13 \\notin \\mathbb{N}"
-      },
-      {
-        "category": "\\mathbb{Q} \\setminus \\mathbb{Z}",
-        "category_latex": true,
-        "answer_key": "F",
-        "answer_display": "1{,}\\overline{4} = \\frac{13}{9}",
-        "answer_latex": true,
-        "explanation": "1{,}\\overline{4} = \\frac{13}{9} \\in \\mathbb{Q},\\; \\frac{13}{9} \\notin \\mathbb{Z}"
-      },
-      {
-        "category": "\\mathbb{C} \\setminus \\mathbb{R}",
-        "category_latex": true,
-        "answer_key": "E",
-        "answer_display": "2 \\cdot i",
-        "answer_latex": true,
-        "explanation": "2i \\in \\mathbb{C},\\; 2i \\notin \\mathbb{R}"
-      }
-    ],
-    "lösungsweg": [
-      {
-        "step": 1,
-        "text": "\\frac{20}{5} = 4 \\Rightarrow C \\in \\mathbb{N}",
-        "latex": true
-      },
-      {
-        "step": 2,
-        "text": "-\\sqrt{169} = -13 \\Rightarrow D \\in \\mathbb{Z} \\setminus \\mathbb{N}",
-        "latex": true
-      },
-      {
-        "step": 3,
-        "text": "1{,}\\overline{4} = \\frac{13}{9} \\Rightarrow F \\in \\mathbb{Q} \\setminus \\mathbb{Z}",
-        "latex": true
-      },
-      {
-        "step": 4,
-        "text": "2i \\Rightarrow E \\in \\mathbb{C} \\setminus \\mathbb{R}",
-        "latex": true
-      }
-    ],
-    "bewertung": {
-      "max_punkte": 1,
-      "teilpunkte": [
-        { "punkte": 1, "bedingung": "Alle vier Zuordnungen richtig" },
-        { "punkte": 0.5, "bedingung": "Zwei oder drei Zuordnungen richtig" },
-        { "punkte": 0, "bedingung": "Weniger als zwei richtige Zuordnungen" }
-      ]
-    }
-  },
-  {
-    "page": 3,
-    "id": 3,
-    "type": "task",
-    "meta": {
-      "title": "Terme",
-      "term": null,
-      "task_id": null,
-      "aufgabentyp": "Typ 1",
-      "grundkompetenz": "AG 1.2",
-      "punkte": "[0 / 1 P.]",
-      "bewertung": "Ein Punkt für das richtige Ankreuzen."
-    },
-    "text": "Für die von null verschiedenen ganzen Zahlen $a$ und $b$ gilt: $a = -4 \\cdot b$",
-    "text_latex": true,
-    "interaction": {
-      "type": "multi_choice",
-      "instruction": "Kreuzen Sie die beiden Terme an, die in jedem Fall eine natürliche Zahl ergeben.",
-      "select_count": 2,
-      "choices": [
-        { "key": "1", "display": "a - b",           "latex": true },
-        { "key": "2", "display": "\\frac{-a}{b}",   "latex": true },
-        { "key": "3", "display": "a + b",            "latex": true },
-        { "key": "4", "display": "(-a - b)^{2}",    "latex": true },
-        { "key": "5", "display": "a \\cdot b",       "latex": true }
-      ]
-    }
-  },
-  {
-    "page": 4,
-    "id": 4,
-    "type": "solution",
-    "task_id": 3,
-    "correct_answers": [
-      {
-        "key": "2",
-        "display": "\\frac{-a}{b}",
-        "latex": true,
-        "explanation": "\\frac{-a}{b} = \\frac{-(-4b)}{b} = \\frac{4b}{b} = 4 \\in \\mathbb{N}"
-      },
-      {
-        "key": "4",
-        "display": "(-a - b)^{2}",
-        "latex": true,
-        "explanation": "(-a - b)^{2} = (4b - b)^{2} = (3b)^{2} = 9b^{2} \\in \\mathbb{N}"
-      }
-    ],
-    "lösungsweg": [
-      {
-        "step": 1,
-        "text": "a = -4b \\text{ einsetzen und jeden Term prüfen:}",
-        "latex": true
-      },
-      {
-        "step": 2,
-        "text": "a - b = -4b - b = -5b \\quad \\Rightarrow \\text{ kann negativ sein} \\Rightarrow \\notin \\mathbb{N}",
-        "latex": true
-      },
-      {
-        "step": 3,
-        "text": "\\frac{-a}{b} = \\frac{4b}{b} = 4 \\in \\mathbb{N} \\checkmark",
-        "latex": true
-      },
-      {
-        "step": 4,
-        "text": "a + b = -4b + b = -3b \\quad \\Rightarrow \\text{ kann negativ sein} \\Rightarrow \\notin \\mathbb{N}",
-        "latex": true
-      },
-      {
-        "step": 5,
-        "text": "(-a - b)^{2} = (3b)^{2} = 9b^{2} > 0 \\in \\mathbb{N} \\checkmark",
-        "latex": true
-      },
-      {
-        "step": 6,
-        "text": "a \\cdot b = -4b \\cdot b = -4b^{2} < 0 \\quad \\Rightarrow \\notin \\mathbb{N}",
-        "latex": true
-      }
-    ],
-    "bewertung": {
-      "max_punkte": 1,
-      "teilpunkte": [
-        { "punkte": 1, "bedingung": "Beide Terme richtig angekreuzt" },
-        { "punkte": 0, "bedingung": "Weniger als zwei richtige Antworten" }
-      ]
-    }
-  },
-  {
-    "page": 5,
-    "id": 5,
-    "type": "task",
-    "meta": {
-      "title": "Zahlenmengen",
-      "term": "Wintertermin 2025",
-      "task_id": "1_1425",
-      "aufgabentyp": "Typ 1",
-      "grundkompetenz": "AG 1.1",
-      "punkte": "[0 / 1 P.]",
-      "bewertung": "Ein Punkt für das richtige Ankreuzen."
-    },
-    "text": "Gegeben sind die Mengen $A = \\{x \\in \\mathbb{R} \\mid -1 < x < 0\\}$ und $B = \\{y \\in \\mathbb{Q} \\mid -1 < y < 0\\}$.",
-    "text_latex": true,
-    "interaction": {
-      "type": "multi_choice",
-      "instruction": "Kreuzen Sie die beiden zutreffenden Aussagen an.",
-      "select_count": 2,
-      "choices": [
-        {
-          "key": "1",
-          "display": "$A$ und $B$ enthalten jeweils ganze Zahlen.",
-          "latex": true
-        },
-        {
-          "key": "2",
-          "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
-          "latex": true
-        },
-        {
-          "key": "3",
-          "display": "Jedes Element von $B$ ist auch Element von $A$.",
-          "latex": true
-        },
-        {
-          "key": "4",
-          "display": "Das Produkt zweier Elemente aus $B$ liegt in jedem Fall in $A$.",
-          "latex": true
-        },
-        {
-          "key": "5",
-          "display": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen.",
-          "latex": true
+    {
+        "id": 1,
+        "page": 1,
+        "aufgaben_id": "1_1567",
+        "maturatermin": "Wintertermin 2026",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
+        "typ": "Typ 1",
+        "punkte": "[0 / ½ / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [
+            0,
+            0.5,
+            1
+        ],
+        "type": "task",
+        "category": "Zahlenmengen*",
+        "grundkompetenz": "AG 1.1",
+        "intro": "Im Folgenden sind vier Zahlenmengen und sechs Zahlen angegeben.",
+        "aufgabenstellung": "Ordnen Sie den vier Zahlenmengen jeweils diejenige Zahl aus A bis F zu, die in dieser Zahlenmenge enthalten ist.",
+        "interaction": {
+            "type": "matching",
+            "pairs": [
+                {
+                    "left": "$\\mathbb{N}$",
+                    "right_key": null
+                },
+                {
+                    "left": "$\\mathbb{Z} \\setminus \\mathbb{N}$",
+                    "right_key": null
+                },
+                {
+                    "left": "$\\mathbb{Q} \\setminus \\mathbb{Z}$",
+                    "right_key": null
+                },
+                {
+                    "left": "$\\mathbb{C} \\setminus \\mathbb{R}$",
+                    "right_key": null
+                }
+                ],
+                "choices": [
+                {
+                    "key": "A",
+                    "value": "$\\sqrt{7}$"
+                },
+                {
+                    "key": "B",
+                    "value": "$\\frac{\\pi}{4}$"
+                },
+                {
+                    "key": "C",
+                    "value": "$\\frac{20}{5}$"
+                },
+                {
+                    "key": "D",
+                    "value": "$-\\sqrt{169}$"
+                },
+                {
+                    "key": "E",
+                    "value": "$2 \\cdot i$"
+                },
+                {
+                    "key": "F",
+                    "value": "$1{,}\\overline{4}$"
+                }
+            ]
         }
-      ]
+    },
+    {
+        "id": 2,
+        "page": 3,
+        "aufgaben_id": "1_1449",
+        "maturatermin": "Haupttermin 2025",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
+        "typ": "Typ 1",
+        "punkte": "[0 / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [0, 1],
+        "type": "task",
+        "category": "Terme*",
+        "grundkompetenz": "AG 1.2",
+        "intro": "Für die von null verschiedenen ganzen Zahlen $a$ und $b$ gilt: $a = -4 \\cdot b$",
+        "aufgabenstellung": "Kreuzen Sie die beiden Terme an, die in jedem Fall eine natürliche Zahl ergeben.",
+        "interaction": {
+            "type": "multi_choice",
+            "select_count": 2,
+            "choices": [
+                { "key": "1", "value": "$a - b$" },
+                { "key": "2", "value": "$\\frac{-a}{b}$" },
+                { "key": "3", "value": "$a + b$" },
+                { "key": "4", "value": "$(-a - b)^{2}$" },
+                { "key": "5", "value": "$a \\cdot b$" }
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "page": 5,
+        "aufgaben_id": "1_1425",
+        "maturatermin": "Wintertermin 2025",
+        "source": "https://www.aufgabenpool.at/amn/allFiles/AG.pdf",
+        "typ": "Typ 1",
+        "punkte": "[0 / 1 P.]",
+        "punkte_max": 1,
+        "punkte_stufen": [
+            0,
+            1
+        ],
+        "type": "task",
+        "category": "Zahlenmengen",
+        "grundkompetenz": "AG 1.1",
+        "intro": "Gegeben sind die Mengen $A = \\{x \\in \\mathbb{R} \\mid -1 < x < 0\\}$ und $B = \\{y \\in \\mathbb{Q} \\mid -1 < y < 0\\}$.",
+        "aufgabenstellung": "Kreuzen Sie die beiden zutreffenden Aussagen an.",
+        "interaction": {
+            "type": "multi_choice",
+            "select_count": 2,
+            "choices": [
+                {
+                    "key": "1",
+                    "value": "$A$ und $B$ enthalten jeweils ganze Zahlen."
+                },
+                {
+                    "key": "2",
+                    "value": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$."
+                },
+                {
+                    "key": "3",
+                    "value": "Jedes Element von $B$ ist auch Element von $A$."
+                },
+                {
+                    "key": "4",
+                    "value": "Das Produkt zweier Elemente aus $B$ liegt in jedem Fall in $A$."
+                },
+                {
+                    "key": "5",
+                    "value": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen."
+                }
+            ]
+        }
     }
-  },
-  {
-    "page": 6,
-    "id": 6,
-    "type": "solution",
-    "task_id": 5,
-    "correct_answers": [
-      {
-        "key": "3",
-        "display": "Jedes Element von $B$ ist auch Element von $A$.",
-        "latex": true,
-        "explanation": "B \\subseteq \\mathbb{Q} \\subseteq \\mathbb{R} \\text{ und beide haben dasselbe Intervall} \\Rightarrow B \\subseteq A"
-      },
-      {
-        "key": "5",
-        "display": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen.",
-        "latex": true,
-        "explanation": "\\mathbb{R} \\subset \\mathbb{C} \\text{ und } \\mathbb{Q} \\subset \\mathbb{C} \\Rightarrow A \\subset \\mathbb{C},\\; B \\subset \\mathbb{C}"
-      }
-    ],
-    "lösungsweg": [
-      {
-        "step": 1,
-        "text": "\\text{Aussage 1: Das Intervall } (-1, 0) \\text{ enthält keine ganzen Zahlen} \\Rightarrow \\text{falsch}",
-        "latex": true
-      },
-      {
-        "step": 2,
-        "text": "\\text{Aussage 2: z.B. } (-0{,}5) + (-0{,}5) = -1 \\notin A \\text{ (offenes Intervall!)} \\Rightarrow \\text{falsch}",
-        "latex": true
-      },
-      {
-        "step": 3,
-        "text": "\\text{Aussage 3: } B \\subseteq \\mathbb{Q} \\subseteq \\mathbb{R},\\; \\text{gleiches Intervall} \\Rightarrow B \\subseteq A \\checkmark",
-        "latex": true
-      },
-      {
-        "step": 4,
-        "text": "\\text{Aussage 4: z.B. } (-0{,}5) \\cdot (-0{,}5) = 0{,}25 \\notin A \\text{ (nur negative Werte in } A\\text{)} \\Rightarrow \\text{falsch}",
-        "latex": true
-      },
-      {
-        "step": 5,
-        "text": "\\text{Aussage 5: } \\mathbb{R} \\subset \\mathbb{C} \\text{ und } \\mathbb{Q} \\subset \\mathbb{C} \\Rightarrow A \\subset \\mathbb{C},\\; B \\subset \\mathbb{C} \\checkmark",
-        "latex": true
-      }
-    ],
-    "bewertung": {
-      "max_punkte": 1,
-      "teilpunkte": [
-        { "punkte": 1, "bedingung": "Beide Aussagen richtig angekreuzt" },
-        { "punkte": 0, "bedingung": "Weniger als zwei richtige Antworten" }
-      ]
-    }
-  }
 ]
