@@ -38,7 +38,7 @@ const props = defineProps({
           'bg-[var(--accent3)] border-[var(--accent3)]': state === 'done' || state === 'correct',
           'bg-[var(--accent4)] border-[var(--accent4)]': state === 'wrong',
           'bg-[var(--accent)]  border-[var(--accent)]  animate-pulse': state === 'active',
-          'bg-[var(--surface2)] border-[var(--border)]': !state,
+          'bg-[var(--border)]  border-[var(--border)]  opacity-25':  !state,
         }"
       ></div>
     </div>

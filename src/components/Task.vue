@@ -251,7 +251,7 @@ watch(
 
     <!-- Aufgabenstellung -->
     <section v-if="props.task.aufgabenstellung" class="mb-5">
-      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-[var(--accent2)] mb-2">Aufgabenstellung</p>
+      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-[var(--accent3)] mb-2">Aufgabenstellung</p>
       <p class="text-[1.02rem] leading-[1.65] text-[var(--text)]" v-html="props.task.aufgabenstellung" v-math-render></p>
     </section>
 
@@ -291,8 +291,8 @@ watch(
           class="flex items-center justify-between rounded-xl border px-4 py-3 text-left transition"
           :class="[
             isChoiceSelected(option.key)
-              ? 'border-[var(--accent2)] bg-[var(--surface2)]'
-              : 'border-[var(--border)] bg-[var(--surface2)] hover:border-[var(--accent2)]'
+              ? 'border-[var(--accent)] bg-[var(--surface2)]'
+              : 'border-[var(--border)] bg-[var(--surface2)] hover:border-[var(--accent)]'
           ]"
           :aria-pressed="isChoiceSelected(option.key)"
           @click="toggleChoiceSelection(option.key)"
@@ -301,8 +301,8 @@ watch(
             <span
               class="rounded-full px-2 py-0.5 text-xs font-semibold border"
               :class="isChoiceSelected(option.key)
-                ? 'bg-[var(--accent2)] text-[var(--surface)] border-[var(--accent2)]'
-                : 'bg-[var(--surface)] text-[var(--accent2)] border-[var(--border)]'"
+                ? 'bg-[var(--accent)] text-white border-[var(--accent)]'
+                : 'bg-[var(--surface)] text-[var(--text-muted)] border-[var(--border)]'"
             >
               {{ option.key }}
             </span>
@@ -310,7 +310,7 @@ watch(
           </div>
           <svg
             v-if="isChoiceSelected(option.key)"
-            class="h-5 w-5 shrink-0 text-[var(--accent2)]"
+            class="h-5 w-5 shrink-0 text-[var(--accent)]"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
@@ -326,7 +326,7 @@ watch(
 
     <!-- Punkte / Bewertung -->
     <section v-if="punkte || bewertung" class="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-5 py-4 text-sm mt-6">
-      <p v-if="punkte" class="font-semibold font-syne text-[var(--accent2)]">Punkte: {{ punkte }}</p>
+      <p v-if="punkte" class="font-semibold font-syne text-[var(--accent3)]">Punkte: {{ punkte }}</p>
       <p v-if="bewertung" class="text-[var(--text-muted)]" :class="{ 'mt-2': punkte }">{{ bewertung }}</p>
     </section>
   </div>

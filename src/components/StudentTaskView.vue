@@ -27,11 +27,9 @@ const progressPercent = computed(() => {
 const isLastTask = computed(() => totalTasks.value > 0 && activeTaskIndex.value === totalTasks.value - 1)
 
 const dotStates = computed(() => {
-  return tasks.value.map((t, i) => {
-    const key = t.id != null ? String(t.id) : `page-${t.page ?? i}`
-    const answered = !!taskResponses.value[key]
+  return tasks.value.map((_, i) => {
     if (i === activeTaskIndex.value) return 'active'
-    if (i < activeTaskIndex.value || answered) return 'done'
+    if (i < activeTaskIndex.value) return 'done'
     return ''
   })
 })
@@ -154,17 +152,17 @@ onMounted(async () => {
         <button
           v-if="debugOverride"
           type="button"
-          class="px-4 py-2 rounded-md font-medium transition border border-slate-200 text-slate-600 hover:border-slate-300"
+          class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-5 py-3 transition hover:-translate-y-px border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)]"
           :disabled="isPrevDisabled"
           :aria-disabled="isPrevDisabled"
-          :class="{ 'opacity-50 cursor-not-allowed': isPrevDisabled }"
+          :class="{ 'opacity-40 cursor-not-allowed pointer-events-none': isPrevDisabled }"
           @click="goToPreviousTask"
         >
-          Zurück
+          ← Zurück
         </button>
         <button
           type="button"
-          class="px-3 py-2 text-xs font-semibold uppercase tracking-wide rounded-md border border-dashed border-slate-300 text-slate-500 hover:text-slate-700"
+          class="font-syne text-[0.78rem] font-semibold uppercase tracking-wide rounded-xl px-4 py-2 border border-dashed border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)] transition"
           @click="toggleDebugOverride"
         >
           {{ debugOverride ? 'Debug deaktivieren' : 'Debug: Sperre aufheben' }}
