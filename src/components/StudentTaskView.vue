@@ -103,9 +103,12 @@ const goToNextTask = () => {
   scrollToTopSmooth()
 }
 
+const saveError = ref('')
+
 const saveToSheets = async () => {
   if (finishDisabled.value) return
   isSaving.value = true
+  saveError.value = ''
 
   const answers = Object.values(taskResponses.value).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   const exportPayload = {
@@ -134,13 +137,21 @@ const saveToSheets = async () => {
       body: JSON.stringify({ range: 'Sheet1!A1', values }),
     })
     const json = await res.json()
-    if (!json.ok) console.warn('[sheets] Fehler:', json.error)
+    if (!res.ok || !json.ok) {
+      console.error('[sheets] Fehler:', json.error)
+      saveError.value = json.error ?? `HTTP ${res.status}`
+      isSaving.value = false
+      return
+    }
   } catch (err) {
-    console.warn('[sheets] Anfrage fehlgeschlagen:', err)
-  } finally {
+    console.error('[sheets] Anfrage fehlgeschlagen:', err)
+    saveError.value = err.message ?? 'Netzwerkfehler'
     isSaving.value = false
-    router.push('/gratulation')
+    return
   }
+
+  isSaving.value = false
+  router.push('/gratulation')
 }
 
 onMounted(async () => {
@@ -190,6 +201,9 @@ onMounted(async () => {
         >
           {{ debugOverride ? 'Debug deaktivieren' : 'Debug: Sperre aufheben' }}
         </button>
+        <p v-if="saveError" class="w-full text-sm text-red-500 font-medium">
+          ❌ Speichern fehlgeschlagen: {{ saveError }}
+        </p>
         <button
           v-if="isLastTask"
           type="button"
