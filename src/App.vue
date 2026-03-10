@@ -1,8 +1,9 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import { useTheme } from './composables/useTheme.js'
 
-const { isLight, toggle } = useTheme()
+// Theme initialisieren (setzt light-theme Klasse auf <html>)
+useTheme()
 </script>
 
 <template>
@@ -16,9 +17,9 @@ const { isLight, toggle } = useTheme()
 
       <!-- Titel -->
       <h1 class="font-syne font-extrabold text-[1.2rem] tracking-[-0.01em] text-[var(--text)]">
-        Mathe<span style="color: var(--accent)">Trainer</span>
+        Math<span style="color: var(--accent)">Co</span>
         &ndash;
-        <span style="color: var(--accent)">8. Klasse AHS</span>
+        <span style="color: var(--accent)">Dein Mathe</span> Trainer
       </h1>
 
       <!-- Badge rechts -->
@@ -26,16 +27,7 @@ const { isLight, toggle } = useTheme()
         class="ml-auto text-[0.78rem] px-[14px] py-[6px] rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] whitespace-nowrap"
       >Aufgabenpool · Zentralmatura</div>
 
-      <!-- Theme Toggle -->
-      <button
-        type="button"
-        @click="toggle"
-        :title="isLight ? 'Dunkles Design' : 'Helles Design'"
-        class="ml-3 flex items-center justify-center w-9 h-9 rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition text-[1.1rem]"
-      >
-        <span v-if="isLight">🌙</span>
-        <span v-else>☀️</span>
-      </button>
+
     </header>
 
     <div class="mx-auto flex max-w-5xl flex-col gap-6">

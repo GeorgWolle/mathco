@@ -117,24 +117,14 @@ const saveToSheets = async () => {
     answers
   }
 
-  // Ergebnis als flache Zeilen aufbereiten: eine Zeile pro Antwort
-  const header = ['generatedAt', 'totalTasks', 'taskKey', 'taskId', 'title', 'interactionType', 'selections']
-  const rows = answers.map(a => [
-    exportPayload.generatedAt,
-    exportPayload.totalTasks,
-    a.taskKey ?? '',
-    a.taskId ?? '',
-    a.title ?? '',
-    a.interactionType ?? '',
-    JSON.stringify(a.selections ?? [])
-  ])
-  const values = [header, ...rows]
+  // Gesamte Einreichung als einzelne JSON-Zeile
+  const values = [[JSON.stringify(exportPayload)]]
 
   try {
     const res = await fetch('/api/sheets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ range: 'Sheet1!A1', values }),
+      body: JSON.stringify({ values }),
     })
     const json = await res.json()
     if (!res.ok || !json.ok) {

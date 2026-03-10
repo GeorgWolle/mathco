@@ -39,14 +39,21 @@ export default async function handler(req, res) {
 
     const sheets = google.sheets({ version: 'v4', auth })
 
+    // Aktuelle Anzahl Zeilen ermitteln → nächste freie Zeile berechnen
+    const existing = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range: 'Sheet1!A:A',
+    })
+    const nextRow = (existing.data.values?.length ?? 0) + 1
+
     await sheets.spreadsheets.values.update({
       spreadsheetId,
-      range: range ?? 'Sheet1!A1',
+      range: `Sheet1!A${nextRow}`,
       valueInputOption: 'USER_ENTERED',
-      requestBody: { values: values ?? [['Testdaten', new Date().toISOString()]] },
+      requestBody: { values: values ?? [[JSON.stringify({ test: true, generatedAt: new Date().toISOString() })]] },
     })
 
-    res.status(200).json({ ok: true, range, rows: values?.length })
+    res.status(200).json({ ok: true, row: nextRow, rows: values?.length })
   } catch (err) {
     console.error('[sheets-api] Fehler:', err.message)
     res.status(500).json({ error: err.message })
