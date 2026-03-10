@@ -220,32 +220,33 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="w-full rounded-3xl bg-surface p-8 shadow-accent my-8">
-    <header class="mb-8 space-y-2 text-slate-800">
-      <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Admin Review</p>
-      <h2 class="text-3xl font-semibold text-slate-900">Hallo, liebe Tutor:innen 👋</h2>
-      <p class="text-base text-slate-600">
+  <section class="w-full rounded-[var(--radius)] bg-surface p-8 shadow-accent my-8">
+    <header class="mb-8 space-y-2">
+      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-muted)]">Admin Review</p>
+      <h2 class="text-3xl font-semibold text-[var(--text)]">Hallo, liebe Tutor:innen 👋</h2>
+      <p class="text-base text-[var(--text-muted)]">
         Füge hier die JSON-Antwort deiner Schüler:innen ein, um sie später zu prüfen.
       </p>
     </header>
 
     <form @submit.prevent="handleSubmit" class="space-y-4">
-      <label class="block text-sm font-semibold text-slate-700">Antwort als JSON</label>
+      <label class="block text-sm font-semibold text-[var(--text)]">Antwort als JSON</label>
       <textarea
         v-model="jsonInput"
-        class="min-h-[220px] w-full rounded-xl border border-[var(--border)] bg-surface2 p-4 font-mono text-sm text-[var(--text)] focus:border-accent2 focus:bg-surface focus:outline-none"
+        class="min-h-[220px] w-full rounded-xl border border-[var(--border)] bg-surface2 p-4 font-mono text-sm text-[var(--text)] focus:border-[var(--accent)] focus:bg-surface focus:outline-none"
         placeholder='{"taskId":"abc","answers":{"1":"A"}}'
       ></textarea>
       <button
         type="submit"
-        class="inline-flex w-full items-center justify-center rounded-xl bg-accent2 px-5 py-3 text-sm font-semibold tracking-wide text-surface shadow-accent2 transition hover:-translate-y-0.5 hover:bg-accent2/80"
+        class="font-syne font-semibold text-[0.88rem] inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-white transition hover:-translate-y-px"
+        style="background:linear-gradient(135deg,var(--accent),#5a53d4);box-shadow:0 4px 16px rgba(0,0,0,0.3)"
       >
         JSON einreichen
       </button>
-      <p v-if="parseError" class="rounded-2xl border border-rose-100 bg-rose-50 px-4 py-2 text-sm text-rose-600">
+      <p v-if="parseError" class="rounded-xl border border-[var(--accent4)] bg-[var(--surface2)] px-4 py-2 text-sm text-[var(--accent4)]">
         {{ parseError }}
       </p>
-      <p v-else-if="statusMessage" class="rounded-xl border border-accent2 bg-surface2 px-4 py-2 text-sm text-accent2 flex items-center gap-2">
+      <p v-else-if="statusMessage" class="rounded-xl border border-[var(--border)] bg-[var(--surface2)] px-4 py-2 text-sm text-[var(--text-muted)] flex items-center gap-2">
         <span aria-hidden="true">🥳</span>
         <span>{{ statusMessage }}</span>
       </p>
@@ -255,21 +256,21 @@ onMounted(() => {
   <section
     v-if="hasReviewSession"
     ref="reviewSectionRef"
-    class="mt-8 w-full rounded-3xl bg-surface p-8 shadow-accent"
+    class="mt-8 w-full rounded-[var(--radius)] bg-surface p-8 shadow-accent"
   >
     <header class="mb-6 space-y-2">
-      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">Auswertung</p>
+      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)]">Auswertung</p>
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h3 class="text-2xl font-semibold text-slate-900">Antwort {{ activeIndex + 1 }} prüfen</h3>
-        <span class="text-sm font-medium text-slate-500">{{ progressLabel }}</span>
+        <h3 class="text-2xl font-semibold text-[var(--text)]">Antwort {{ activeIndex + 1 }} prüfen</h3>
+        <span class="text-sm font-medium text-[var(--text-muted)]">{{ progressLabel }}</span>
       </div>
-      <div class="h-3 w-full rounded-full bg-yellow-100/80 border border-yellow-200 overflow-hidden relative mt-2 mb-2">
+      <div class="h-3 w-full rounded-full bg-[var(--surface2)] border border-[var(--border)] overflow-hidden relative mt-2 mb-2">
         <div
-          class="h-full rounded-full bg-gradient-to-r from-yellow-300 to-yellow-400 shadow-inner transition-[width] duration-300"
-          :style="{ width: `${progressPercent}%` }"
+          class="h-full rounded-full transition-[width] duration-300"
+          :style="{ width: `${progressPercent}%`, background: 'linear-gradient(135deg, var(--accent), #5a53d4)' }"
         ></div>
-        <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-semibold text-yellow-900/80 select-none">
-          {{ Math.round(progressPercent) }}% 🎯
+        <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-semibold text-[var(--text)] select-none">
+
         </span>
       </div>
     </header>
@@ -277,10 +278,10 @@ onMounted(() => {
     <section class="space-y-6">
       <div class="grid gap-4 rounded-xl border border-[var(--border)] bg-surface2 p-5 sm:grid-cols-3">
         <div v-for="summary in currentSummary" :key="summary.label" class="space-y-1">
-          <p class="text-xs uppercase tracking-wide text-slate-400">{{ summary.label }}</p>
-          <p class="text-base font-medium text-slate-900">
+          <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-muted)]">{{ summary.label }}</p>
+          <p class="text-base font-medium text-[var(--text)]">
             <template v-if="summary.label === 'Quelle' && summary.value && summary.value !== '–'">
-              <a :href="summary.value" target="_blank" rel="noopener" class="underline text-emerald-700 hover:text-emerald-500">
+              <a :href="summary.value" target="_blank" rel="noopener" class="underline text-[var(--accent3)] hover:opacity-75">
                 {{ summary.value.split('/').pop() }}
               </a>
             </template>
@@ -292,43 +293,43 @@ onMounted(() => {
       </div>
 
 
-        <details class="rounded-xl border border-accent2 bg-surface2 p-4 text-sm text-accent2 mb-4" :open="false">
-          <summary class="cursor-pointer text-sm font-semibold text-accent2">Original Aufgabenstellung anzeigen</summary>
+        <details class="rounded-xl border border-[var(--border)] bg-[var(--surface2)] p-4 text-sm text-[var(--text-muted)] mb-4" :open="false">
+          <summary class="cursor-pointer text-sm font-semibold text-[var(--text)]">Original Aufgabenstellung anzeigen</summary>
           <div v-if="currentTaskOriginal" class="mt-4">
             <Task :task="currentTaskOriginal" />
           </div>
-          <div v-else class="italic text-slate-400">Keine Aufgabenstellung gefunden.</div>
+          <div v-else class="italic text-[var(--text-muted)]">Keine Aufgabenstellung gefunden.</div>
         </details>
 
       <div class="space-y-3 rounded-xl border border-[var(--border)] bg-surface2 p-5">
         <div class="flex items-center justify-between">
-          <h4 class="text-base font-semibold text-slate-900">Auswahlen & Zuordnungen</h4>
-          <span class="text-sm text-slate-500">{{ selectionRows.length }} Einträge</span>
+          <h4 class="text-base font-semibold text-[var(--text)]">Auswahlen & Zuordnungen</h4>
+          <span class="text-sm text-[var(--text-muted)]">{{ selectionRows.length }} Einträge</span>
         </div>
         <div v-if="selectionRows.length" class="space-y-3">
           <article
             v-for="row in selectionRows"
             :key="row.id"
-            class="rounded-xl border border-[var(--border)] bg-surface p-4 shadow-accent2 flex flex-col gap-2"
+            class="rounded-xl border border-[var(--border)] bg-surface p-4 shadow-accent flex flex-col gap-2"
           >
             <div class="flex items-center gap-2">
-              <p class="text-sm font-semibold text-slate-500 flex-1" v-html="row.label" v-math-render></p>
-              <span v-if="row.correct === true" class="inline-flex items-center rounded-full bg-surface2 px-2 py-0.5 text-xs font-semibold text-accent3 border border-accent3">✔️ korrekt! 🎉</span>
-              <span v-else-if="row.correct === false" class="inline-flex items-center rounded-full bg-surface2 px-2 py-0.5 text-xs font-semibold text-accent4 border border-accent4">✗ leider falsch 😅</span>
+              <p class="text-sm font-semibold text-[var(--text-muted)] flex-1" v-html="row.label" v-math-render></p>
+              <span v-if="row.correct === true" class="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[0.78rem] font-semibold" style="background:rgba(79,209,165,0.12);color:var(--accent3);border:1px solid rgba(79,209,165,0.3)">✔ korrekt</span>
+              <span v-else-if="row.correct === false" class="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-[0.78rem] font-semibold" style="background:rgba(247,111,111,0.12);color:var(--accent4);border:1px solid rgba(247,111,111,0.3)">✗ falsch</span>
             </div>
-            <p class="text-xl font-medium text-slate-900 text-center" v-html="row.detail" v-math-render></p>
+            <p class="text-xl font-medium text-[var(--text)] text-center" v-html="row.detail" v-math-render></p>
             <span
               v-if="row.badge"
-              class="mt-2 inline-flex items-center rounded-full bg-surface2 px-3 py-1 text-xs font-semibold text-accent2 border border-accent2"
+              class="mt-2 inline-flex items-center rounded-full bg-[var(--surface2)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)] border border-[var(--border)]"
             >
               {{ row.badge }}
             </span>
           </article>
         </div>
-              <div v-if="currentSolution && currentSolution.loesungsweg && currentSolution.loesungsweg.length" class="mt-6 rounded-xl border border-accent2 bg-surface2 p-5">
-                <h4 class="text-base font-semibold text-accent2 mb-2">Lösungsweg</h4>
+              <div v-if="currentSolution && currentSolution.loesungsweg && currentSolution.loesungsweg.length" class="mt-6 rounded-xl border border-[var(--border)] bg-[var(--surface2)] p-5">
+                <h4 class="text-base font-semibold text-[var(--accent)] mb-2">Lösungsweg</h4>
                 <ol class="list-decimal list-inside space-y-1">
-                  <li v-for="step in currentSolution.loesungsweg" :key="step.step" class="text-slate-800" v-html="step.text" v-math-render></li>
+                  <li v-for="step in currentSolution.loesungsweg" :key="step.step" class="text-[var(--text)]" v-html="step.text" v-math-render></li>
                 </ol>
               </div>
         <p v-else class="rounded-xl border border-dashed border-[var(--border)] px-4 py-3 text-sm text-muted flex items-center gap-2">
@@ -337,36 +338,32 @@ onMounted(() => {
         </p>
       </div>
 
-      <details class="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600">
-        <summary class="cursor-pointer text-sm font-semibold text-slate-700">Rohdaten anzeigen</summary>
-        <pre class="mt-3 overflow-auto rounded-xl bg-white p-4 text-xs text-slate-800">{{ prettyCurrentAnswer }}</pre>
+      <details class="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--surface2)] p-4 text-sm text-[var(--text-muted)]">
+        <summary class="cursor-pointer text-sm font-semibold text-[var(--text)]">Rohdaten anzeigen</summary>
+        <pre class="mt-3 overflow-auto rounded-xl bg-[var(--surface)] border border-[var(--border)] p-4 text-xs text-[var(--text)]">{{ prettyCurrentAnswer }}</pre>
       </details>
     </section>
 
     <footer class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-semibold transition"
-        :class="[
-          canGoPrev ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-slate-50 text-slate-400 cursor-not-allowed'
-        ]"
+        class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-5 py-3 transition hover:-translate-y-px border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)]"
+        :class="{ 'opacity-40 cursor-not-allowed pointer-events-none': !canGoPrev }"
         :disabled="!canGoPrev"
         @click="goPrev"
       >
-        Zurück
+        ← Zurück
       </button>
-      <span class="text-sm font-medium text-slate-500">{{ progressLabel }}</span>
+      <span class="text-sm font-medium text-[var(--text-muted)]">{{ progressLabel }}</span>
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-semibold transition"
-        :class="[
-          canGoNext ? 'bg-yellow-400 text-yellow-900 hover:bg-yellow-300' : 'bg-yellow-100 text-yellow-300 cursor-not-allowed'
-        ]"
+        class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-6 py-3 text-white transition hover:-translate-y-px"
+        :style="canGoNext ? 'background:linear-gradient(135deg,var(--accent),#5a53d4);box-shadow:0 4px 16px rgba(0,0,0,0.3)' : 'background:var(--surface2);color:var(--text-muted);cursor:default;border:1.5px solid var(--border)'"
         :disabled="!canGoNext"
         @click="goNext"
       >
         <span v-if="isOnLastAnswer">Ende erreicht 🎊</span>
-        <span v-else>Weiter ➡️</span>
+        <span v-else>Weiter →</span>
       </button>
     </footer>
   </section>

@@ -13,7 +13,7 @@ const props = defineProps({
   <div class="mb-9">
     <!-- Meta-Zeile: Titel + Zähler-Pill -->
     <div class="flex items-center justify-between mb-[10px]">
-      <span class="font-syne font-bold text-[1.05rem] text-[var(--text)]">{{ props.title }}</span>
+      <span class="font-syne font-bold text-[2.2rem] leading-tight text-[var(--text)]">{{ props.title }}</span>
       <span class="text-[0.82rem] text-[var(--text-muted)] bg-[var(--surface2)] border border-[var(--border)] px-3 py-1 rounded-full">
         Aufgabe {{ props.activeIndex + 1 }} von {{ props.total }}
       </span>

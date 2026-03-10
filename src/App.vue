@@ -1,5 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { useTheme } from './composables/useTheme.js'
+
+const { isLight, toggle } = useTheme()
 </script>
 
 <template>
@@ -22,6 +25,17 @@ import { RouterLink, RouterView } from 'vue-router'
       <div
         class="ml-auto text-[0.78rem] px-[14px] py-[6px] rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] whitespace-nowrap"
       >Aufgabenpool · Zentralmatura</div>
+
+      <!-- Theme Toggle -->
+      <button
+        type="button"
+        @click="toggle"
+        :title="isLight ? 'Dunkles Design' : 'Helles Design'"
+        class="ml-3 flex items-center justify-center w-9 h-9 rounded-full border border-[var(--border)] bg-[var(--surface2)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition text-[1.1rem]"
+      >
+        <span v-if="isLight">🌙</span>
+        <span v-else>☀️</span>
+      </button>
     </header>
 
     <div class="mx-auto flex max-w-5xl flex-col gap-6">

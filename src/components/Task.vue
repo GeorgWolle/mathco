@@ -225,7 +225,7 @@ watch(
     <div class="absolute inset-y-0 left-0 w-1 rounded-l bg-[var(--accent)]"></div>
 
     <!-- q-header -->
-    <div class="flex items-start gap-[14px] mb-5">
+    <div class="flex items-center gap-[14px] mb-5">
       <!-- q-number Badge -->
       <div
         class="flex shrink-0 items-center justify-center h-9 min-w-[36px] rounded-[10px] font-syne font-bold text-[0.9rem] text-[var(--text)]"
@@ -235,23 +235,23 @@ watch(
       </div>
       <!-- Titel / Kategorie -->
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--text-muted)] mb-1">
+        <p class="text-[1.0rem] font-semibold uppercase text-[var(--text-muted)]">
           {{ category || 'Aufgabe' }}<span v-if="page"> · Seite {{ page }}</span>
         </p>
-        <p class="text-[1.02rem] leading-[1.65] font-semibold text-[var(--text)]">
+        <!-- <p class="text-[1.02rem] leading-[1.65] font-semibold text-[var(--text)]">
           {{ title }}
-        </p>
+        </p> -->
       </div>
     </div>
 
     <!-- Intro / Kontext -->
     <section v-if="intro" class="mb-4">
-      <p class="text-[0.93rem] leading-[1.7] text-[var(--text-muted)]" v-html="intro" v-math-render></p>
+      <p class="text-[0.93rem] leading-[1.7] text-[var(--text)]" v-html="intro" v-math-render></p>
     </section>
 
     <!-- Aufgabenstellung -->
     <section v-if="props.task.aufgabenstellung" class="mb-5">
-      <p class="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-[var(--accent3)] mb-2">Aufgabenstellung</p>
+      <p class="text-[1.0rem] font-semibold uppercase tracking-[0.08em] text-[var(--accent3)] mb-2">Aufgabenstellung</p>
       <p class="text-[1.02rem] leading-[1.65] text-[var(--text)]" v-html="props.task.aufgabenstellung" v-math-render></p>
     </section>
 
@@ -277,7 +277,7 @@ watch(
     <!-- Multi-Choice -->
     <section v-if="isMultiChoiceTask && choices.length" class="space-y-4 mt-4">
       <div>
-        <p class="text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)] mb-1">Antwortoptionen</p>
+        <p class="text-[1.0rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)] mb-1">Antwortoptionen</p>
         <p v-if="instruction" class="text-[0.93rem] text-[var(--text-muted)]" v-html="instruction" v-math-render></p>
         <p v-if="selectCount" class="text-[0.75rem] font-semibold uppercase text-[var(--text-muted)] mt-1">
           Wähle {{ selectCount }} Optionen.

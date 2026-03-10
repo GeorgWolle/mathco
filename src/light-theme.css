@@ -1,0 +1,22 @@
+/*
+  mathco light theme — energetisch & motivierend für Jugendliche
+*/
+.light-theme {
+  --bg:          #f4f3ff;
+  --surface:     #ffffff;
+  --surface2:    #ebe9ff;
+  --border:      #d0ccfa;
+  --accent:      #6c5ce7;
+  --accent2:     #f59f00;
+  --accent3:     #12b886;
+  --accent4:     #f03e3e;
+  --text:        #1e1b4b;
+  --text-muted:  #6e6a9e;
+  --radius:      16px;
+}
+
+.light-theme body,
+.light-theme {
+  background: var(--bg);
+  color: var(--text);
+}

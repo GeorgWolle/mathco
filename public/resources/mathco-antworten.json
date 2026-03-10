@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-08T09:53:22.049Z",
+  "generatedAt": "2026-03-09T17:57:31.607Z",
   "totalTasks": 3,
   "answers": [
     {
@@ -12,13 +12,13 @@
       "selections": [
         {
           "category": "$\\mathbb{N}$",
-          "selectedKey": "B",
-          "selectedDisplay": "$\\frac{\\pi}{4}$"
+          "selectedKey": "C",
+          "selectedDisplay": "$\\frac{20}{5}$"
         },
         {
           "category": "$\\mathbb{Z} \\setminus \\mathbb{N}$",
-          "selectedKey": "C",
-          "selectedDisplay": "$\\frac{20}{5}$"
+          "selectedKey": "D",
+          "selectedDisplay": "$-\\sqrt{169}$"
         },
         {
           "category": "$\\mathbb{Q} \\setminus \\mathbb{Z}$",
@@ -27,8 +27,8 @@
         },
         {
           "category": "$\\mathbb{C} \\setminus \\mathbb{R}$",
-          "selectedKey": "D",
-          "selectedDisplay": "$-\\sqrt{169}$"
+          "selectedKey": "E",
+          "selectedDisplay": "$2 \\cdot i$"
         }
       ],
       "order": 0
@@ -42,12 +42,12 @@
       "selectCount": 2,
       "selections": [
         {
-          "key": "1",
-          "display": "$a - b$"
-        },
-        {
           "key": "2",
           "display": "$\\frac{-a}{b}$"
+        },
+        {
+          "key": "4",
+          "display": "$(-a - b)^{2}$"
         }
       ],
       "order": 1
@@ -65,8 +65,8 @@
           "display": "Die Summe zweier Elemente aus $B$ liegt in jedem Fall in $A$."
         },
         {
-          "key": "3",
-          "display": "Jedes Element von $B$ ist auch Element von $A$."
+          "key": "5",
+          "display": "$A$ und $B$ sind jeweils eine Teilmenge der komplexen Zahlen."
         }
       ],
       "order": 2

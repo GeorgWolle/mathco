@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import TaskHero from './TaskHero.vue'
 import Task from './Task.vue'
 
@@ -17,6 +18,9 @@ const loadError = ref('')
 const canAdvance = ref(false)
 const debugOverride = ref(false)
 const taskResponses = ref({})
+const isDebugMode = import.meta.env.VITE_DEBUG === 'true'
+const router = useRouter()
+const isSaving = ref(false)
 
 
 const totalTasks = computed(() => tasks.value.length)
@@ -99,9 +103,9 @@ const goToNextTask = () => {
   scrollToTopSmooth()
 }
 
-const downloadResults = () => {
+const saveToSheets = async () => {
   if (finishDisabled.value) return
-  if (typeof window === 'undefined' || !window.document) return
+  isSaving.value = true
 
   const answers = Object.values(taskResponses.value).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   const exportPayload = {
@@ -110,15 +114,33 @@ const downloadResults = () => {
     answers
   }
 
-  const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'mathco-antworten.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  // Ergebnis als flache Zeilen aufbereiten: eine Zeile pro Antwort
+  const header = ['generatedAt', 'totalTasks', 'taskKey', 'taskId', 'title', 'interactionType', 'selections']
+  const rows = answers.map(a => [
+    exportPayload.generatedAt,
+    exportPayload.totalTasks,
+    a.taskKey ?? '',
+    a.taskId ?? '',
+    a.title ?? '',
+    a.interactionType ?? '',
+    JSON.stringify(a.selections ?? [])
+  ])
+  const values = [header, ...rows]
+
+  try {
+    const res = await fetch('/api/sheets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ range: 'Sheet1!A1', values }),
+    })
+    const json = await res.json()
+    if (!json.ok) console.warn('[sheets] Fehler:', json.error)
+  } catch (err) {
+    console.warn('[sheets] Anfrage fehlgeschlagen:', err)
+  } finally {
+    isSaving.value = false
+    router.push('/gratulation')
+  }
 }
 
 onMounted(async () => {
@@ -161,6 +183,7 @@ onMounted(async () => {
           ← Zurück
         </button>
         <button
+          v-if="isDebugMode"
           type="button"
           class="font-syne text-[0.78rem] font-semibold uppercase tracking-wide rounded-xl px-4 py-2 border border-dashed border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--accent)] hover:text-[var(--text)] transition"
           @click="toggleDebugOverride"
@@ -172,12 +195,13 @@ onMounted(async () => {
           type="button"
           class="font-syne font-semibold text-[0.88rem] flex items-center gap-2 rounded-xl px-6 py-3 text-white transition hover:-translate-y-px"
           :style="finishDisabled ? 'opacity:0.4;cursor:default' : 'background:linear-gradient(135deg,var(--accent),#5a53d4);box-shadow:0 4px 16px rgba(0,0,0,0.3)'"
-          :disabled="finishDisabled"
-          :aria-disabled="finishDisabled"
-          @click="() => { downloadResults(); $emit('show-confetti'); }"
+          :disabled="finishDisabled || isSaving"
+          :aria-disabled="finishDisabled || isSaving"
+          @click="() => { saveToSheets(); $emit('show-confetti'); }"
         >
-          <span aria-hidden="true">🎉</span>
-          <span>Super, alles geschafft! Download</span>
+          <span v-if="isSaving" class="inline-block h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" aria-hidden="true"></span>
+          <span v-else aria-hidden="true">🎉</span>
+          <span>{{ isSaving ? 'Wird gespeichert…' : 'Super, alles geschafft! Speichern' }}</span>
         </button>
         <button
           v-else
